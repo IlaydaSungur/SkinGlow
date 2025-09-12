@@ -36,6 +36,16 @@ SkinGlow/
 - Node.js (v18 or higher)
 - npm (comes with Node.js)
 
+### Quick Start (Windows)
+
+**Option 1: Use the provided batch files**
+
+1. Double-click `install-all.bat` to install all dependencies
+2. Double-click `start-frontend.bat` to start the Angular app (http://localhost:4200)
+3. Double-click `start-backend.bat` to start the API server (http://localhost:3000)
+
+**Option 2: Manual setup**
+
 ## Frontend (Angular)
 
 ### Installation
@@ -53,6 +63,8 @@ npm start
 ```
 
 Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+**Important:** Always run the frontend commands from the `frontend/` directory, not the project root.
 
 ### Build
 
@@ -89,11 +101,13 @@ npm start
 ## Features
 
 ### Frontend
+
 - **Routing**: Navigate between Shelf, Analyse, and Routines pages
 - **Responsive Design**: Clean, modern interface
 - **Active Tab Highlighting**: Blue outline pill for the currently selected tab
 
 ### Backend
+
 - **RESTful API**: Express.js server with CORS support
 - **Health Check**: API endpoint monitoring
 - **Modular Structure**: Ready for feature expansion
