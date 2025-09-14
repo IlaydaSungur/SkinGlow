@@ -1,42 +1,68 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const express = require('express')
+const cors = require('cors')
+const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
+const config = require('./config/environment')
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+// Import routes
+const apiRoutes = require('./routes/api')
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+const app = express()
+const PORT = config.port
 
-// Routes
+// Security middleware
+app.use(helmet())
+
+// Rate limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: {
+    error: 'Too many requests',
+    message: 'Please try again later',
+  },
+})
+app.use('/api/', limiter)
+
+// CORS configuration
+app.use(
+  cors({
+    origin: config.frontendUrl,
+    credentials: true,
+  })
+)
+
+// Body parser middleware
+app.use(express.json({ limit: '10mb' }))
+app.use(express.urlencoded({ extended: true }))
+
+// Root route
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'SkinGlow Backend API',
-    version: '1.0.0',
-    status: 'Running'
-  });
-});
+    version: '2.0.0',
+    status: 'Running',
+    features: [
+      'User Authentication with Supabase',
+      'Protected API Routes',
+      'Skin Analysis',
+      'Routine Management',
+      'Product Recommendations',
+    ],
+    endpoints: {
+      health: '/api/health',
+      products: '/api/products',
+      routines: '/api/routines (protected)',
+      analysis: '/api/analysis (protected)',
+      profile: '/api/profile (protected)',
+    },
+  })
+})
 
 // API Routes
-app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', timestamp: new Date().toISOString() });
-});
-
-// Placeholder routes for future features
-app.get('/api/products', (req, res) => {
-  res.json({ message: 'Products endpoint - Coming soon' });
-});
-
-app.get('/api/routines', (req, res) => {
-  res.json({ message: 'Routines endpoint - Coming soon' });
-});
-
-app.get('/api/analysis', (req, res) => {
-  res.json({ message: 'Analysis endpoint - Coming soon' });
-});
+app.use('/api', apiRoutes)
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`SkinGlow Backend running on port ${PORT}`);
-});
+  console.log(`SkinGlow Backend running on port ${PORT}`)
+})
