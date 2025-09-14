@@ -1,0 +1,20 @@
+<div class="profile-container">
+  <div class="profile-card">
+    <h1>User Profile</h1>
+    <div *ngIf="user" class="user-info">
+      <div class="info-item">
+        <label>Email:</label>
+        <span>{{ user.email }}</span>
+      </div>
+      <div class="info-item">
+        <label>User ID:</label>
+        <span>{{ user.id }}</span>
+      </div>
+      <div class="info-item">
+        <label>Created:</label>
+        <span>{{ user.created_at | date : 'medium' }}</span>
+      </div>
+    </div>
+    <div *ngIf="!user" class="loading">Loading user information...</div>
+  </div>
+</div>

@@ -2,9 +2,33 @@
   <div class="nav-container">
     <div class="nav-brand">SkinGlow</div>
     <div class="nav-links">
-      <a routerLink="/shelf" routerLinkActive="active" class="nav-link">Shelf</a>
-      <a routerLink="/analyse" routerLinkActive="active" class="nav-link">Analyse</a>
-      <a routerLink="/routines" routerLinkActive="active" class="nav-link">Routines</a>
+      <!-- Show navigation links only when user is authenticated -->
+      <ng-container *ngIf="user$ | async as user">
+        <a routerLink="/shelf" routerLinkActive="active" class="nav-link"
+          >Shelf</a
+        >
+        <a routerLink="/analyse" routerLinkActive="active" class="nav-link"
+          >Analyse</a
+        >
+        <a routerLink="/routines" routerLinkActive="active" class="nav-link"
+          >Routines</a
+        >
+        <a
+          routerLink="/profile"
+          routerLinkActive="active"
+          class="user-icon"
+          title="Profile"
+          >👤</a
+        >
+        <button (click)="logout()" class="logout-btn" title="Logout">
+          Logout
+        </button>
+      </ng-container>
+
+      <!-- Show login link when user is not authenticated -->
+      <ng-container *ngIf="!(user$ | async)">
+        <a routerLink="/login" class="nav-link">Login</a>
+      </ng-container>
     </div>
   </div>
 </nav>
