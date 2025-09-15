@@ -1,3 +1,61 @@
-<div class="page-container">
-  <h1>Shelf</h1>
+<div class="shelf-container">
+  <h2 class="shelf-title">your shelf</h2>
+
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of products">
+      <h3>{{ product.name }}</h3>
+      <p><strong>Brand:</strong> {{ product.brand }}</p>
+      <p><strong>Type:</strong> {{ product.type }}</p>
+      <p><strong>Ingredients:</strong></p>
+      <ul>
+        <li *ngFor="let ingredient of product.ingredients">
+          {{ ingredient }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <button class="add-button" (click)="onAddProduct()">+</button>
+<!-- Add Product Modal -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <h3>Add New Product</h3>
+    <form (ngSubmit)="addProduct()" #productForm="ngForm">
+      <input
+        type="text"
+        name="name"
+        [(ngModel)]="newProduct.name"
+        placeholder="Product Name"
+        required
+      />
+      <input
+        type="text"
+        name="brand"
+        [(ngModel)]="newProduct.brand"
+        placeholder="Brand"
+        required
+      />
+      <input
+        type="text"
+        name="ingredients"
+        [(ngModel)]="ingredientsInput"
+        placeholder="Ingredients (comma-separated)"
+        required
+      />
+      <select name="type" [(ngModel)]="newProduct.type" required>
+        <option value="" disabled selected>Select Type</option>
+        <option value="moisturizer">Moisturizer</option>
+        <option value="serum">Serum</option>
+        <option value="cleanser">Cleanser</option>
+        <option value="sunscreen">Sunscreen</option>
+        <option value="other">Other</option>
+      </select>
+
+      <button type="submit">Save</button>
+      <button type="button" (click)="closeModal()">Cancel</button>
+    </form>
+  </div>
+</div>
+
+
 </div>
