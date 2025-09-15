@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';         // 💡 Angular directives için
-import { FormsModule } from '@angular/forms';           // 💡 [(ngModel)] için
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { SupabaseService } from 'src/app/core/supabase.service';
 
 interface SkincareProduct {
+  id?: string; // 🔥 burada id eklendi
   name: string;
   brand: string;
   ingredients: string[];
@@ -13,14 +14,15 @@ interface SkincareProduct {
 
 @Component({
   selector: 'app-shelf',
-  standalone: true,                                     // 💡 Standalone component
-  imports: [CommonModule, FormsModule],                 // 💡 GEREKLİ MODÜLLER
+  standalone: true,
+  imports: [CommonModule, FormsModule], // 🔥 ngIf, ngFor, ngModel için
   templateUrl: './shelf.component.html',
-  styleUrls: ['./shelf.component.css']
+  styleUrls: ['./shelf.component.css'],
 })
 export class ShelfComponent implements OnInit {
   products: SkincareProduct[] = [];
   showModal = false;
+  editingProduct: SkincareProduct | null = null;
 
   newProduct: SkincareProduct = {
     name: '',
@@ -60,6 +62,7 @@ export class ShelfComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.resetForm();
+    this.editingProduct = null;
   }
 
   resetForm() {
@@ -72,25 +75,61 @@ export class ShelfComponent implements OnInit {
     this.ingredientsInput = '';
   }
 
-  async addProduct() {
+  async saveProduct() {
     const user = this.supabaseService.user;
     if (!user) return;
 
-    const productToInsert = {
+    const productToSave = {
       ...this.newProduct,
-      ingredients: this.ingredientsInput.split(',').map(i => i.trim()),
+      ingredients: this.ingredientsInput.split(',').map((i) => i.trim()),
       user_id: user.id,
     };
 
+    if (this.editingProduct && this.editingProduct.id) {
+      const { error } = await this.supabaseService.supabase
+        .from('products')
+        .update(productToSave)
+        .eq('id', this.editingProduct.id);
+
+      if (error) {
+        console.error('Update error:', error);
+      }
+    } else {
+      const { error } = await this.supabaseService.supabase
+        .from('products')
+        .insert(productToSave);
+
+      if (error) {
+        console.error('Insert error:', error);
+      }
+    }
+
+    this.closeModal();
+    this.fetchProducts();
+  }
+
+  editProduct(product: SkincareProduct) {
+    this.editingProduct = product;
+    this.newProduct = { ...product };
+    this.ingredientsInput = product.ingredients.join(', ');
+    this.showModal = true;
+  }
+
+  async deleteProduct(product: SkincareProduct) {
+    const confirmDelete = confirm(`Are you sure you want to delete "${product.name}"?`);
+    if (!confirmDelete) return;
+
+    if (!product.id) return;
+
     const { error } = await this.supabaseService.supabase
       .from('products')
-      .insert(productToInsert);
+      .delete()
+      .eq('id', product.id);
 
     if (error) {
-      console.error('Insert error:', error);
+      console.error('Delete error:', error);
     } else {
-      this.closeModal();
-      this.fetchProducts(); // refresh list
+      this.fetchProducts();
     }
   }
 

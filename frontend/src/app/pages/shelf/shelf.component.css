@@ -82,3 +82,21 @@
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+.card-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-buttons button {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background-color: #e3e3e3;
+  transition: 0.2s;
+}
+
+.card-buttons button:hover {
+  background-color: #ccc;
+}

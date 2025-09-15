@@ -8,19 +8,23 @@
       <p><strong>Type:</strong> {{ product.type }}</p>
       <p><strong>Ingredients:</strong></p>
       <ul>
-        <li *ngFor="let ingredient of product.ingredients">
-          {{ ingredient }}
-        </li>
+        <li *ngFor="let ingredient of product.ingredients">{{ ingredient }}</li>
       </ul>
+  
+      <div class="card-buttons">
+        <button (click)="editProduct(product)">Edit</button>
+        <button (click)="deleteProduct(product)">Delete</button>
+      </div>
     </div>
   </div>
+  
 
   <button class="add-button" (click)="onAddProduct()">+</button>
 <!-- Add Product Modal -->
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
-    <h3>Add New Product</h3>
-    <form (ngSubmit)="addProduct()" #productForm="ngForm">
+    <h3>{{ editingProduct ? 'Edit Product' : 'Add New Product' }}</h3>
+    <form (ngSubmit)="saveProduct()" #productForm="ngForm">
       <input
         type="text"
         name="name"
