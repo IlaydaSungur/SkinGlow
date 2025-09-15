@@ -1,12 +1,30 @@
 .page-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
-  height: 80vh;
+  min-height: 80vh;
   text-align: center;
+  padding: 20px;
 }
 
 h1 {
   font-size: 2.5rem;
   color: #333;
 }
+
+input, button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  font-size: 1rem;
+}
+
+pre {
+  background: #f4f4f4;
+  padding: 10px;
+  text-align: left;
+  max-width: 600px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+

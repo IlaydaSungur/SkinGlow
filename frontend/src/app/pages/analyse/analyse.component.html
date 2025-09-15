@@ -1,3 +1,20 @@
 <div class="page-container">
   <h1>Analyse</h1>
+
+  <!-- Fotoğraf yükleme -->
+  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <button (click)="processImage()">Analyse</button>
+
+  <!-- Çıkan text -->
+  <div *ngIf="extractedText">
+    <h3>Extracted Text:</h3>
+    <pre>{{ extractedText }}</pre>
+  </div>
+
+  <!-- Ingredients -->
+  <div *ngIf="ingredients">
+    <h3>Ingredients:</h3>
+    <p>{{ ingredients }}</p>
+  </div>
 </div>
+
