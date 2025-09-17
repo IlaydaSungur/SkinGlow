@@ -1,65 +1,92 @@
 <div class="shelf-container">
-  <h2 class="shelf-title">your shelf</h2>
-
+  <h2 class="shelf-title">Your Shelf</h2>
+  <div class="filter-bar">
+    <label for="typeFilter">Filter by type:</label>
+    <select id="typeFilter" [(ngModel)]="selectedType">
+      <option value="all">All</option>
+      <option value="moisturizer">Moisturizer</option>
+      <option value="serum">Serum</option>
+      <option value="cleanser">Cleanser</option>
+      <option value="sunscreen">Sunscreen</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
   <div class="product-grid">
-    <div class="product-card" *ngFor="let product of products">
-      <h3>{{ product.name }}</h3>
-      <p><strong>Brand:</strong> {{ product.brand }}</p>
-      <p><strong>Type:</strong> {{ product.type }}</p>
-      <p><strong>Ingredients:</strong></p>
-      <ul>
-        <li *ngFor="let ingredient of product.ingredients">{{ ingredient }}</li>
-      </ul>
-  
+    <div class="product-card" *ngFor="let product of filteredProducts" (click)="toggleIngredients(product)">
+      <div class="image-wrap">
+        <img
+                class="product-image"
+                [src]="getImageSrc(product.type)"
+                [alt]="product.name"
+        />
+        <div class="image-overlay">
+          <div class="overlay-title">{{ product.name }}</div>
+          <div class="overlay-brand">{{ product.brand }}</div>
+        </div>
+      </div>
+
+      <!-- Toggle area -->
+      <div class="expand-hint" *ngIf="expandedProductId !== product.id">
+        Click to view ingredients
+      </div>
+
+      <div *ngIf="expandedProductId === product.id" class="ingredients-list">
+        <p><strong>Ingredients:</strong></p>
+        <ul>
+          <li *ngFor="let ingredient of product.ingredients">{{ ingredient }}</li>
+        </ul>
+        <div class="collapse-hint">Click to hide ingredients</div>
+      </div>
+
       <div class="card-buttons">
-        <button (click)="editProduct(product)">Edit</button>
-        <button (click)="deleteProduct(product)">Delete</button>
+        <button (click)="editProduct(product); $event.stopPropagation()">Edit</button>
+        <button (click)="deleteProduct(product); $event.stopPropagation()">Delete</button>
       </div>
     </div>
   </div>
-  
 
   <button class="add-button" (click)="onAddProduct()">+</button>
-<!-- Add Product Modal -->
-<div class="modal" *ngIf="showModal">
-  <div class="modal-content">
-    <h3>{{ editingProduct ? 'Edit Product' : 'Add New Product' }}</h3>
-    <form (ngSubmit)="saveProduct()" #productForm="ngForm">
-      <input
-        type="text"
-        name="name"
-        [(ngModel)]="newProduct.name"
-        placeholder="Product Name"
-        required
-      />
-      <input
-        type="text"
-        name="brand"
-        [(ngModel)]="newProduct.brand"
-        placeholder="Brand"
-        required
-      />
-      <input
-        type="text"
-        name="ingredients"
-        [(ngModel)]="ingredientsInput"
-        placeholder="Ingredients (comma-separated)"
-        required
-      />
-      <select name="type" [(ngModel)]="newProduct.type" required>
-        <option value="" disabled selected>Select Type</option>
-        <option value="moisturizer">Moisturizer</option>
-        <option value="serum">Serum</option>
-        <option value="cleanser">Cleanser</option>
-        <option value="sunscreen">Sunscreen</option>
-        <option value="other">Other</option>
-      </select>
 
-      <button type="submit">Save</button>
-      <button type="button" (click)="closeModal()">Cancel</button>
-    </form>
+  <!-- Add/Edit Modal -->
+  <div class="modal" *ngIf="showModal">
+    <div class="modal-content">
+      <h3>{{ editingProduct ? 'Edit Product' : 'Add New Product' }}</h3>
+
+      <form (ngSubmit)="saveProduct()" #productForm="ngForm">
+        <input
+                type="text"
+                name="name"
+                [(ngModel)]="newProduct.name"
+                placeholder="Product Name"
+                required
+        />
+        <input
+                type="text"
+                name="brand"
+                [(ngModel)]="newProduct.brand"
+                placeholder="Brand"
+                required
+        />
+        <input
+                type="text"
+                name="ingredients"
+                [(ngModel)]="ingredientsInput"
+                placeholder="Ingredients (comma-separated)"
+                required
+        />
+
+        <select name="type" [(ngModel)]="newProduct.type" required>
+          <option value="" disabled selected>Select Type</option>
+          <option value="moisturizer">Moisturizer</option>
+          <option value="serum">Serum</option>
+          <option value="cleanser">Cleanser</option>
+          <option value="sunscreen">Sunscreen</option>
+          <option value="other">Other</option>
+        </select>
+
+        <button type="submit">Save</button>
+        <button type="button" (click)="closeModal()">Cancel</button>
+      </form>
+    </div>
   </div>
-</div>
-
-
 </div>

@@ -136,4 +136,21 @@ export class ShelfComponent implements OnInit {
   onAddProduct() {
     this.openModal();
   }
+  getImageSrc(type: string | undefined | null): string {
+    if (!type) return 'assets/images/other.png';
+    return `assets/images/${type.toLowerCase()}.png`;
+  }
+  selectedType: string = 'all';
+
+  get filteredProducts() {
+    if (this.selectedType === 'all') {
+      return this.products;
+    }
+    return this.products.filter(p => p.type.toLowerCase() === this.selectedType.toLowerCase());
+  }
+  expandedProductId: string | null | undefined= null;
+
+  toggleIngredients(product: SkincareProduct) {
+    this.expandedProductId = this.expandedProductId === product.id ? null : product.id;
+  }
 }
