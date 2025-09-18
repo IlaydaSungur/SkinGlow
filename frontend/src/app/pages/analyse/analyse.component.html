@@ -31,7 +31,8 @@
     <div *ngFor="let item of analysis" class="card">
       <h4>{{ item.name }}</h4>
       <p>{{ item.description }}</p>
-      <span class="effect"
+      <span
+        class="effect"
         [ngClass]="{
           beneficial: item.effect === 'beneficial',
           harmful: item.effect === 'harmful',
@@ -49,4 +50,3 @@
     <pre>{{ raw }}</pre>
   </div>
 </div>
-

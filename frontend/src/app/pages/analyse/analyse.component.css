@@ -13,7 +13,8 @@ h1 {
   color: #333;
 }
 
-input, button {
+input,
+button {
   margin-top: 15px;
   padding: 8px 12px;
   font-size: 1rem;
@@ -27,4 +28,3 @@ pre {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-

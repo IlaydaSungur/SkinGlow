@@ -12,12 +12,16 @@
     </select>
   </div>
   <div class="product-grid">
-    <div class="product-card" *ngFor="let product of filteredProducts" (click)="toggleIngredients(product)">
+    <div
+      class="product-card"
+      *ngFor="let product of filteredProducts"
+      (click)="toggleIngredients(product)"
+    >
       <div class="image-wrap">
         <img
-                class="product-image"
-                [src]="getImageSrc(product.type)"
-                [alt]="product.name"
+          class="product-image"
+          [src]="getImageSrc(product.type)"
+          [alt]="product.name"
         />
         <div class="image-overlay">
           <div class="overlay-title">{{ product.name }}</div>
@@ -33,14 +37,20 @@
       <div *ngIf="expandedProductId === product.id" class="ingredients-list">
         <p><strong>Ingredients:</strong></p>
         <ul>
-          <li *ngFor="let ingredient of product.ingredients">{{ ingredient }}</li>
+          <li *ngFor="let ingredient of product.ingredients">
+            {{ ingredient }}
+          </li>
         </ul>
         <div class="collapse-hint">Click to hide ingredients</div>
       </div>
 
       <div class="card-buttons">
-        <button (click)="editProduct(product); $event.stopPropagation()">Edit</button>
-        <button (click)="deleteProduct(product); $event.stopPropagation()">Delete</button>
+        <button (click)="editProduct(product); $event.stopPropagation()">
+          Edit
+        </button>
+        <button (click)="deleteProduct(product); $event.stopPropagation()">
+          Delete
+        </button>
       </div>
     </div>
   </div>
@@ -54,25 +64,25 @@
 
       <form (ngSubmit)="saveProduct()" #productForm="ngForm">
         <input
-                type="text"
-                name="name"
-                [(ngModel)]="newProduct.name"
-                placeholder="Product Name"
-                required
+          type="text"
+          name="name"
+          [(ngModel)]="newProduct.name"
+          placeholder="Product Name"
+          required
         />
         <input
-                type="text"
-                name="brand"
-                [(ngModel)]="newProduct.brand"
-                placeholder="Brand"
-                required
+          type="text"
+          name="brand"
+          [(ngModel)]="newProduct.brand"
+          placeholder="Brand"
+          required
         />
         <input
-                type="text"
-                name="ingredients"
-                [(ngModel)]="ingredientsInput"
-                placeholder="Ingredients (comma-separated)"
-                required
+          type="text"
+          name="ingredients"
+          [(ngModel)]="ingredientsInput"
+          placeholder="Ingredients (comma-separated)"
+          required
         />
 
         <select name="type" [(ngModel)]="newProduct.type" required>
