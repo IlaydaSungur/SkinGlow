@@ -1,8 +1,16 @@
-import { Component } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+} from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { Router, RouterModule } from '@angular/router'
 import { SupabaseService } from '../../core/supabase.service'
+import { GooeyOverlayService } from '../../services/gooey-overlay.service'
 
 @Component({
   selector: 'app-login',
@@ -11,16 +19,70 @@ import { SupabaseService } from '../../core/supabase.service'
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('gooeyCanvas', { static: false })
+  canvasRef!: ElementRef<HTMLCanvasElement>
+  @ViewChild('pageElement', { static: false }) pageRef!: ElementRef<HTMLElement>
+
   email = ''
   password = ''
   loading = false
   errorMessage = ''
+  scrollStarted = false
 
   constructor(
     private supabaseService: SupabaseService,
-    private router: Router
+    private router: Router,
+    private gooeyOverlayService: GooeyOverlayService
   ) {}
+
+  ngOnInit(): void {
+    // Set up scroll detection
+    this.setupScrollDetection()
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize gooey overlay after view is ready
+    if (this.canvasRef && this.pageRef) {
+      const success = this.gooeyOverlayService.init(
+        this.canvasRef.nativeElement,
+        this.pageRef.nativeElement
+      )
+
+      if (success) {
+        // Customize colors for SkinGlow theme
+        this.gooeyOverlayService.updateParams({
+          color: [0.058, 0.639, 0.572], // #0fa392 converted to RGB 0-1 range
+          speed: 0.15,
+          scale: 0.2,
+        })
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Clean up gooey overlay
+    this.gooeyOverlayService.destroy()
+  }
+
+  private setupScrollDetection(): void {
+    let ticking = false
+
+    const updateScrollStatus = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      this.scrollStarted = scrollTop > 50
+      ticking = false
+    }
+
+    const requestTick = () => {
+      if (!ticking) {
+        requestAnimationFrame(updateScrollStatus)
+        ticking = true
+      }
+    }
+
+    window.addEventListener('scroll', requestTick)
+  }
 
   async onSubmit() {
     if (!this.email || !this.password) {

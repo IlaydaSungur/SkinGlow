@@ -1,19 +1,110 @@
+/* Page layout for gooey overlay */
+.page {
+  width: 100%;
+  min-height: 200vh; /* Make page scrollable */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  background-color: #f8fafc;
+}
+
+/* Gooey overlay canvas */
+#gooey-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Scroll message styling */
+.scroll-msg {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 2;
+  position: relative;
+  text-align: center;
+  color: #374151;
+}
+
+.scroll-msg.hidden {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.scroll-msg > div:nth-child(1) {
+  margin-top: -10vh;
+  padding-bottom: 1em;
+  text-transform: uppercase;
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.scroll-msg > div:nth-child(2) {
+  font-size: 1.2em;
+  color: #6b7280;
+  margin-bottom: 2rem;
+}
+
+/* Arrow animation */
+.arrow-animated {
+  font-size: 2em;
+  animation: arrow-float 2s infinite;
+  color: #2563eb;
+}
+
+@keyframes arrow-float {
+  0% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  60% {
+    transform: translateY(20px);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+}
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 80vh;
+  min-height: 100vh;
   padding: 20px;
-  background-color: #f8fafc;
+  z-index: 2;
+  position: relative;
+  margin-top: 50vh; /* Position after scroll message */
 }
 
 .login-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
   width: 100%;
-  max-width: 400px;
+  max-width: 450px;
+  z-index: 3;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
 }
 
 .login-header {

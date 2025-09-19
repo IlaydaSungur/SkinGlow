@@ -19,7 +19,13 @@ export class AnalyseComponent {
   raw: string | null = null;   // ✅ fallback için
   isLoading: boolean = false;
   error: string | null = null;
+  isTextExpanded: boolean = false;
+  isIngredientsExpanded: boolean = false;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
   constructor(private http: HttpClient, private supabaseService: SupabaseService) {}
 
   onFileSelected(event: any) {
@@ -87,6 +93,12 @@ export class AnalyseComponent {
       });
   }
 
+<<<<<<< HEAD
+=======
+  // ✅ Shelf ile karşılaştırma
+isComparing: boolean = false;
+
+>>>>>>> origin/main
 analyseWithShelf() {
   if (this.ingredients.length === 0) return;
 
@@ -96,11 +108,18 @@ analyseWithShelf() {
     return;
   }
 
+<<<<<<< HEAD
+=======
+  this.isComparing = true;   // ✅ start comparing
+  this.error = null;
+
+>>>>>>> origin/main
   this.http.post<any>('http://localhost:3000/compare', {
     userId,
     ingredients: this.ingredients.map(i => i.name)
   }).subscribe({
     next: (res) => {
+<<<<<<< HEAD
       this.analysis = [];
 
       // ✅ Ürün bazlı benzerlikler
@@ -138,13 +157,35 @@ analyseWithShelf() {
       }
     },
     error: () => {
+=======
+      this.isComparing = false;  // ✅ reset
+      if (res.matches.length === 0) {
+        this.analysis = [{
+          name: "No similarities found",
+          description: "",
+          effect: "neutral"
+        }];
+      } else {
+        this.analysis = res.matches.map((m: any) => ({
+          name: `${m.ingredient} ↔ ${m.shelfItem}`,
+          description: `Similarity: ${m.similarity}`,
+          effect: 'neutral'
+        }));
+      }
+    },
+    error: () => {
+      this.isComparing = false;  // ✅ reset on error
+>>>>>>> origin/main
       this.error = "Comparison failed.";
     }
   });
 }
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/main
 }
 

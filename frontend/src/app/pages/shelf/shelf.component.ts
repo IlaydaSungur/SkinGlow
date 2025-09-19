@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { SupabaseService } from 'src/app/core/supabase.service';
+import { Component, OnInit } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
+import { SupabaseService } from 'src/app/core/supabase.service'
 
 interface SkincareProduct {
-  id?: string; // 🔥 burada id eklendi
-  name: string;
-  brand: string;
-  ingredients: string[];
-  type: string;
-  user_id?: string;
+  id?: string // 🔥 burada id eklendi
+  name: string
+  brand: string
+  ingredients: string[]
+  type: string
+  user_id?: string
 }
 
 @Component({
@@ -20,49 +20,49 @@ interface SkincareProduct {
   styleUrls: ['./shelf.component.css'],
 })
 export class ShelfComponent implements OnInit {
-  products: SkincareProduct[] = [];
-  showModal = false;
-  editingProduct: SkincareProduct | null = null;
+  products: SkincareProduct[] = []
+  showModal = false
+  editingProduct: SkincareProduct | null = null
 
   newProduct: SkincareProduct = {
     name: '',
     brand: '',
     ingredients: [],
     type: '',
-  };
+  }
 
-  ingredientsInput = '';
+  ingredientsInput = ''
 
   constructor(private supabaseService: SupabaseService) {}
 
   ngOnInit(): void {
-    this.fetchProducts();
+    this.fetchProducts()
   }
 
   async fetchProducts() {
-    const user = this.supabaseService.user;
-    if (!user) return;
+    const user = this.supabaseService.user
+    if (!user) return
 
     const { data, error } = await this.supabaseService.supabase
       .from('products')
       .select('*')
-      .eq('user_id', user.id);
+      .eq('user_id', user.id)
 
     if (error) {
-      console.error('Fetch error:', error);
+      console.error('Fetch error:', error)
     } else {
-      this.products = data || [];
+      this.products = data || []
     }
   }
 
   openModal() {
-    this.showModal = true;
+    this.showModal = true
   }
 
   closeModal() {
-    this.showModal = false;
-    this.resetForm();
-    this.editingProduct = null;
+    this.showModal = false
+    this.resetForm()
+    this.editingProduct = null
   }
 
   resetForm() {
@@ -71,86 +71,91 @@ export class ShelfComponent implements OnInit {
       brand: '',
       ingredients: [],
       type: '',
-    };
-    this.ingredientsInput = '';
+    }
+    this.ingredientsInput = ''
   }
 
   async saveProduct() {
-    const user = this.supabaseService.user;
-    if (!user) return;
+    const user = this.supabaseService.user
+    if (!user) return
 
     const productToSave = {
       ...this.newProduct,
       ingredients: this.ingredientsInput.split(',').map((i) => i.trim()),
       user_id: user.id,
-    };
+    }
 
     if (this.editingProduct && this.editingProduct.id) {
       const { error } = await this.supabaseService.supabase
         .from('products')
         .update(productToSave)
-        .eq('id', this.editingProduct.id);
+        .eq('id', this.editingProduct.id)
 
       if (error) {
-        console.error('Update error:', error);
+        console.error('Update error:', error)
       }
     } else {
       const { error } = await this.supabaseService.supabase
         .from('products')
-        .insert(productToSave);
+        .insert(productToSave)
 
       if (error) {
-        console.error('Insert error:', error);
+        console.error('Insert error:', error)
       }
     }
 
-    this.closeModal();
-    this.fetchProducts();
+    this.closeModal()
+    this.fetchProducts()
   }
 
   editProduct(product: SkincareProduct) {
-    this.editingProduct = product;
-    this.newProduct = { ...product };
-    this.ingredientsInput = product.ingredients.join(', ');
-    this.showModal = true;
+    this.editingProduct = product
+    this.newProduct = { ...product }
+    this.ingredientsInput = product.ingredients.join(', ')
+    this.showModal = true
   }
 
   async deleteProduct(product: SkincareProduct) {
-    const confirmDelete = confirm(`Are you sure you want to delete "${product.name}"?`);
-    if (!confirmDelete) return;
+    const confirmDelete = confirm(
+      `Are you sure you want to delete "${product.name}"?`
+    )
+    if (!confirmDelete) return
 
-    if (!product.id) return;
+    if (!product.id) return
 
     const { error } = await this.supabaseService.supabase
       .from('products')
       .delete()
-      .eq('id', product.id);
+      .eq('id', product.id)
 
     if (error) {
-      console.error('Delete error:', error);
+      console.error('Delete error:', error)
     } else {
-      this.fetchProducts();
+      this.fetchProducts()
     }
   }
 
   onAddProduct() {
-    this.openModal();
+    this.openModal()
   }
   getImageSrc(type: string | undefined | null): string {
-    if (!type) return 'assets/images/other.png';
-    return `assets/images/${type.toLowerCase()}.png`;
+    if (!type) return 'assets/images/other.png'
+    return `assets/images/${type.toLowerCase()}.png`
   }
-  selectedType: string = 'all';
+  selectedType: string = 'all'
 
   get filteredProducts() {
     if (this.selectedType === 'all') {
-      return this.products;
+      return this.products
     }
-    return this.products.filter(p => p.type.toLowerCase() === this.selectedType.toLowerCase());
+    return this.products.filter(
+      (p) => p.type.toLowerCase() === this.selectedType.toLowerCase()
+    )
   }
-  expandedProductId: string | null | undefined= null;
+  expandedProductId: string | null | undefined = null
 
   toggleIngredients(product: SkincareProduct) {
-    this.expandedProductId = this.expandedProductId === product.id ? null : product.id;
+    this.expandedProductId =
+      this.expandedProductId === product.id ? null : product.id
   }
 }
