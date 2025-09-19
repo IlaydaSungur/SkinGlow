@@ -5,6 +5,11 @@
   padding: 20px;
   min-height: 80vh;
   text-align: center;
+<<<<<<< HEAD
+  padding: 20px;
+  font-family: Arial, sans-serif;
+=======
+>>>>>>> origin/main
 }
 
 h1 {
@@ -13,6 +18,38 @@ h1 {
   color: #333;
 }
 
+<<<<<<< HEAD
+input,
+button {
+  margin-top: 15px;
+  padding: 8px 12px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+button {
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  transition: background 0.2s ease;
+}
+
+button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background-color: #45a049;
+}
+
+.error {
+  margin-top: 15px;
+  color: red;
+  font-weight: bold;
+=======
 /* Upload section */
 .upload-section {
   display: flex;
@@ -20,6 +57,7 @@ h1 {
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
   justify-content: center;
+>>>>>>> origin/main
 }
 
 input[type="file"] {
@@ -87,6 +125,9 @@ input[type="file"] {
   max-width: 700px;
   width: 100%;
   text-align: left;
+<<<<<<< HEAD
+  max-width: 600px;
+=======
 }
 
 .results-card h3 {
@@ -97,11 +138,67 @@ input[type="file"] {
 .results-card pre {
   background: #f9f9f9;
   padding: 10px;
+>>>>>>> origin/main
   border-radius: 6px;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
+<<<<<<< HEAD
+/* === Analysis Cards === */
+.card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin: 10px 0;
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card h4,
+.card h5 {
+  margin: 0;
+  color: #333;
+}
+
+.card .desc {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 6px 0;
+}
+
+/* === Match types === */
+.product-summary {
+  background: #eef6ff;
+  border-left: 5px solid #007bff;
+}
+
+.ingredient-match {
+  background: #f9f9f9;
+}
+
+.submatch {
+  margin-left: 20px;
+  font-style: italic;
+  background: #fefefe;
+}
+
+.info {
+  color: #666;
+  font-style: italic;
+}
+
+/* === Effect Labels === */
+.effect {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-top: 5px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+=======
 /* Analysis cards inside */
 .analysis-card {
   border: 1px solid #eee;
@@ -121,10 +218,27 @@ input[type="file"] {
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 600;
+>>>>>>> origin/main
   text-transform: capitalize;
 }
 
 .effect.beneficial {
+<<<<<<< HEAD
+  background: #d4edda;
+  color: #155724;
+}
+
+.effect.harmful {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.effect.neutral {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+=======
   background: #eafaf1;
   color: #27ae60;
 }
@@ -154,3 +268,4 @@ input[type="file"] {
 .collapsible-header:hover {
   color: #4a90e2;
 }
+>>>>>>> origin/main

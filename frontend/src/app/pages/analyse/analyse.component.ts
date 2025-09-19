@@ -22,7 +22,10 @@ export class AnalyseComponent {
   isTextExpanded: boolean = false;
   isIngredientsExpanded: boolean = false;
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> origin/main
   constructor(private http: HttpClient, private supabaseService: SupabaseService) {}
 
   onFileSelected(event: any) {
@@ -90,9 +93,12 @@ export class AnalyseComponent {
       });
   }
 
+<<<<<<< HEAD
+=======
   // ✅ Shelf ile karşılaştırma
 isComparing: boolean = false;
 
+>>>>>>> origin/main
 analyseWithShelf() {
   if (this.ingredients.length === 0) return;
 
@@ -102,14 +108,56 @@ analyseWithShelf() {
     return;
   }
 
+<<<<<<< HEAD
+=======
   this.isComparing = true;   // ✅ start comparing
   this.error = null;
 
+>>>>>>> origin/main
   this.http.post<any>('http://localhost:3000/compare', {
     userId,
     ingredients: this.ingredients.map(i => i.name)
   }).subscribe({
     next: (res) => {
+<<<<<<< HEAD
+      this.analysis = [];
+
+      // ✅ Ürün bazlı benzerlikler
+      if (res.productSimilarities && res.productSimilarities.length > 0) {
+        res.productSimilarities.forEach((p: any) => {
+          this.analysis.push({
+            type: "product",
+            name: `📊 ${p.productName}`,
+            description: `Overall similarity: ${p.similarity}`,
+            effect: parseFloat(p.similarity) > 60 ? "neutral" : "none"
+          });
+
+          if (p.matchedIngredients && p.matchedIngredients.length > 0) {
+            p.matchedIngredients.forEach((mi: any) => {
+              this.analysis.push({
+                type: "submatch",
+                name: `↳ ${mi.ingredient} ↔ ${mi.shelfItem}`,
+                description: `Similarity: ${mi.similarity}`,
+                effect: "neutral"
+              });
+            });
+          }
+        });
+      }
+
+      // ✅ Hiç eşleşme yoksa mesaj
+      if ((!res.matches || res.matches.length === 0) &&
+          (!res.productSimilarities || res.productSimilarities.length === 0)) {
+        this.analysis.push({
+          type: "info",
+          name: "ℹ️ No similarities found",
+          description: "This product does not match with any of your shelf items.",
+          effect: "none"
+        });
+      }
+    },
+    error: () => {
+=======
       this.isComparing = false;  // ✅ reset
       if (res.matches.length === 0) {
         this.analysis = [{
@@ -127,11 +175,17 @@ analyseWithShelf() {
     },
     error: () => {
       this.isComparing = false;  // ✅ reset on error
+>>>>>>> origin/main
       this.error = "Comparison failed.";
     }
   });
 }
 
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> origin/main
 }
 

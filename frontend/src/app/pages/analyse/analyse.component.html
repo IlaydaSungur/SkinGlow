@@ -1,6 +1,51 @@
 <div class="page-container">
   <h1>Analyse</h1>
 
+<<<<<<< HEAD
+  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+  <button (click)="processImage()" [disabled]="isLoading">
+    {{ isLoading ? 'Analysing...' : 'Analyse' }}
+  </button>
+
+  <button (click)="analyseWithShelf()" [disabled]="isLoading || ingredients.length === 0">
+    Compare with My Shelf
+  </button>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="extractedText">
+    <h3>Extracted Text:</h3>
+    <pre>{{ extractedText }}</pre>
+  </div>
+
+  <div *ngIf="ingredients.length > 0">
+    <h3>Ingredients:</h3>
+    <ul>
+      <li *ngFor="let item of ingredients">
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="analysis.length > 0">
+    <h3>Analysis:</h3>
+    <div *ngFor="let item of analysis"
+         class="card"
+         [ngClass]="{
+           'product-summary': item.type === 'product',
+           'submatch': item.type === 'submatch',
+           'info': item.type === 'info'
+         }">
+      <h4 *ngIf="item.type === 'product'">{{ item.name }}</h4>
+      <h5 *ngIf="item.type === 'submatch'">{{ item.name }}</h5>
+      <span *ngIf="item.type === 'info'">{{ item.name }}</span>
+      <p class="desc">{{ item.description }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!ingredients.length && !analysis.length && raw">
+    <h3>Raw Result:</h3>
+=======
   <!-- Upload + Analyse -->
   <div class="upload-section">
     <label for="file-upload" class="custom-file-upload">
@@ -75,6 +120,7 @@
   <!-- Raw fallback -->
   <div *ngIf="!ingredients.length && !analysis.length && raw" class="results-card">
     <h3>Raw Result</h3>
+>>>>>>> origin/main
     <pre>{{ raw }}</pre>
   </div>
 </div>

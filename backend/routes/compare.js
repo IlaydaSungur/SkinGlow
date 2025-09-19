@@ -1,72 +1,132 @@
-const express = require("express");
-const { getSimilarity } = require("../services/compareService");
-const supabase = require("../services/supabaseClient");
+const express = require('express')
+const {
+  getEmbeddingsBatch,
+  cosineSimilarity,
+} = require('../services/compareService')
+const supabase = require('../services/supabaseClient')
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const { userId, ingredients } = req.body;
-    console.log("📥 Gelen body:", req.body);
+    const { userId, ingredients } = req.body
+    console.log('📥 Gelen body:', req.body)
 
     if (!userId) {
-      return res.status(400).json({ error: "userId is required" });
+      return res.status(400).json({ error: 'userId is required' })
     }
     if (!Array.isArray(ingredients) || ingredients.length === 0) {
-      return res.status(400).json({ error: "ingredients must be a non-empty array" });
+      return res
+        .status(400)
+        .json({ error: 'ingredients must be a non-empty array' })
     }
 
-    // Supabase’den ürün içerikleri
+    // ✅ Kullanıcının ürünlerini al
     const { data: shelfData, error } = await supabase
-      .from("products")
-      .select("ingredients")
-      .eq("user_id", userId);
+      .from('products')
+      .select('id, name, ingredients')
+      .eq('user_id', userId)
 
     if (error) {
-      console.error("❌ Supabase error:", error);
-      return res.status(500).json({ error: "Failed to fetch shelf", details: error.message });
+      console.error('❌ Supabase error:', error)
+      return res
+        .status(500)
+        .json({ error: 'Failed to fetch shelf', details: error.message })
     }
-
-    console.log("📦 Supabase shelfData:", shelfData);
 
     if (!shelfData || shelfData.length === 0) {
-      return res.json({ matches: [], message: "Shelf is empty" });
+      return res.json({
+        matches: [],
+        productSimilarities: [],
+        message: 'Shelf is empty',
+      })
     }
 
-    // ingredients array düzleştir
-    const shelf = shelfData
-      .flatMap(row => Array.isArray(row.ingredients) ? row.ingredients : [])
-      .map(i => i.trim().toLowerCase());
+    const matches = []
+    const productSimilarities = []
+    let anyProductAboveThreshold = false
 
-    console.log("📂 Kullanıcı rafı (ingredients):", shelf);
+    // 🔹 Yeni ürün embeddingleri
+    const newEmbeddings = await getEmbeddingsBatch(ingredients)
 
-    const matches = [];
-    for (const shelfItem of shelf) {
-      for (const ing of ingredients) {
-        const score = await getSimilarity(ing, shelfItem);
-        console.log(`🔍 ${ing} vs ${shelfItem} → ${score}`);
-        if (score > 0.6) {
-          matches.push({
-            ingredient: ing,
-            shelfItem,
-            similarity: (score * 100).toFixed(1) + "%"
-          });
+    for (const row of shelfData) {
+      const shelfIngredients = Array.isArray(row.ingredients)
+        ? row.ingredients.map((i) => i.trim().toLowerCase())
+        : []
+
+      if (shelfIngredients.length === 0) continue
+
+      // 🔹 Raf ürünü embeddingleri
+      const shelfEmbeddings = await getEmbeddingsBatch(shelfIngredients)
+
+      let matchCount = 0
+      const productMatches = []
+
+      // Pairwise karşılaştırma (lokalde)
+      for (let i = 0; i < ingredients.length; i++) {
+        for (let j = 0; j < shelfIngredients.length; j++) {
+          const score = cosineSimilarity(newEmbeddings[i], shelfEmbeddings[j])
+          const percentScore = (score * 100).toFixed(1)
+
+          // terminal log (her karşılaştırma)
+          console.log(
+            `🔍 ${ingredients[i]} vs ${shelfIngredients[j]} → ${percentScore}%`
+          )
+
+          if (score > 0.6) {
+            matchCount++
+            productMatches.push({
+              ingredient: ingredients[i],
+              shelfItem: shelfIngredients[j],
+              similarity: percentScore + '%',
+            })
+            matches.push({
+              ingredient: ingredients[i],
+              shelfItem: shelfIngredients[j],
+              similarity: percentScore + '%',
+              productName: row.name,
+            })
+          }
         }
+      }
+
+      // Ürün bazlı yüzde hesapla
+      const percent = ((matchCount / ingredients.length) * 100).toFixed(1) + '%'
+      productSimilarities.push({
+        productId: row.id,
+        productName: row.name,
+        similarity: percent,
+        matchedIngredients: productMatches,
+      })
+
+      if (matchCount > 0) {
+        anyProductAboveThreshold = true
+        console.log(`✅ ${row.name} bu ürünle içerikleri benzer`)
+        console.log(
+          `   Benzer içerikler:`,
+          productMatches
+            .map((m) => `${m.ingredient} ↔ ${m.shelfItem}`)
+            .join(', ')
+        )
+      } else {
+        console.log(`ℹ️ ${row.name} için %60'tan fazla benzerlik yok`)
       }
     }
 
-    if (matches.length === 0) {
-      console.log("ℹ️ No similarities found.");
-      return res.json({ matches: [], message: "No similarities found" });
+    if (!anyProductAboveThreshold) {
+      console.log('⚠️ No product similarity above threshold')
+      return res.json({
+        matches: [],
+        productSimilarities,
+        message: 'No product similarity above threshold',
+      })
     }
 
-    console.log("✅ Matches found:", matches);
-    res.json({ matches });
+    res.json({ matches, productSimilarities })
   } catch (err) {
-    console.error("❌ Compare error:", err);
-    res.status(500).json({ error: "Comparison failed", details: err.message });
+    console.error('❌ Compare error:', err)
+    res.status(500).json({ error: 'Comparison failed', details: err.message })
   }
-});
+})
 
-module.exports = router;
-
+module.exports = router
