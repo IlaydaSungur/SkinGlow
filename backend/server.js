@@ -11,6 +11,8 @@ dotenv.config()
 
 // Import routes
 const apiRoutes = require('./routes/api')
+const compareRouter = require('./routes/compare')
+const shelfRouter = require('./routes/shelf')
 
 const app = express()
 const PORT = config.port
@@ -20,8 +22,8 @@ app.use(helmet())
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: {
     error: 'Too many requests',
     message: 'Please try again later',
@@ -61,6 +63,8 @@ app.get('/', (req, res) => {
       analysis: '/api/analysis (protected)',
       profile: '/api/profile (protected)',
       analyse: '/api/analyse',
+      compare: '/compare',
+      shelf: '/shelf/:userId'
     },
   })
 })
@@ -111,8 +115,19 @@ BÖLÜM 2 → Açıklamalar (Normal Metin)
     raw = raw.replace(/```json/g, '').replace(/```/g, '').trim()
 
     try {
-      const parsed = JSON.parse(raw)
-      res.json(parsed)
+      const jsonMatch = raw.match(/\{[\s\S]*\}/)
+      let parsed = {}
+      let explanation = ""
+
+      if (jsonMatch) {
+        parsed = JSON.parse(jsonMatch[0])
+        explanation = raw.replace(jsonMatch[0], "").trim()
+      }
+
+      res.json({
+        ingredients: parsed.ingredients || [],
+        explanation
+      })
     } catch (e) {
       res.json({ raw })
     }
@@ -124,6 +139,8 @@ BÖLÜM 2 → Açıklamalar (Normal Metin)
 
 // API Routes
 app.use('/api', apiRoutes)
+app.use('/compare', compareRouter)
+app.use('/shelf', shelfRouter)
 
 // Start server
 app.listen(PORT, () => {

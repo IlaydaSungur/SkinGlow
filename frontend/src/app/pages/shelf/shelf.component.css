@@ -167,3 +167,39 @@
   padding: 0.5rem 0.75rem;
   cursor: pointer;
 }
+.filter-bar {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.filter-bar label {
+  margin-right: 0.75rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.styled-select {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  /*border: 2px solid #4A90E2;   /* pretty border */
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  outline: none;
+  appearance: none; /* remove browser default arrow */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='none' stroke='%234A90E2' stroke-width='2' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 12px;
+}
+
+.styled-select:hover {
+  background-color: #eef6ff;
+}
+
+.styled-select:focus {
+  border-color: #2C6ED5;
+  box-shadow: 0 0 4px rgba(44, 110, 213, 0.4);
+}
