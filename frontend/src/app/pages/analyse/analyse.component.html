@@ -7,6 +7,11 @@
     {{ isLoading ? 'Analysing...' : 'Analyse' }}
   </button>
 
+  <!-- 🔹 Shelf ile kıyaslama butonu -->
+  <button (click)="analyseWithShelf()" [disabled]="isLoading || ingredients.length === 0">
+    Compare with My Shelf
+  </button>
+
   <div *ngIf="error" class="error">{{ error }}</div>
 
   <!-- OCR sonucu -->
@@ -31,7 +36,8 @@
     <div *ngFor="let item of analysis" class="card">
       <h4>{{ item.name }}</h4>
       <p>{{ item.description }}</p>
-      <span class="effect"
+      <span
+        class="effect"
         [ngClass]="{
           beneficial: item.effect === 'beneficial',
           harmful: item.effect === 'harmful',
