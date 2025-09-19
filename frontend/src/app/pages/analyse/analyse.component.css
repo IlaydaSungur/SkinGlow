@@ -1,129 +1,174 @@
 .page-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  padding: 20px;
   min-height: 80vh;
   text-align: center;
-  padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
   color: #333;
 }
 
-input,
-button {
-  margin-top: 15px;
-  padding: 8px 12px;
-  font-size: 1rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+/* Upload section */
+.upload-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-button {
+input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload {
+  background-color: #5ba3f6;
+  color: #fff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
   cursor: pointer;
-  background-color: #4CAF50;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.custom-file-upload:hover {
+  background-color: #357ab8;
+}
+
+.analyse-btn,
+.shelf-btn {
+  background-color: #d885f4;
   color: white;
   border: none;
-  transition: background 0.2s ease;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  height: 42px;
 }
 
-button:disabled {
-  background-color: #aaa;
+.shelf-btn {
+  background-color: #d885f4;
+  margin-bottom: 1.5rem;
+}
+
+.analyse-btn:hover {
+  background-color: #c742f3;
+  transform: translateY(-2px);
+}
+
+.shelf-btn:hover {
+  background-color: #c742f3;
+  transform: translateY(-2px);
+}
+
+.analyse-btn:disabled,
+.shelf-btn:disabled {
+  background-color: #95a5a6;
   cursor: not-allowed;
 }
 
-button:hover:enabled {
-  background-color: #45a049;
-}
-
-.error {
-  margin-top: 15px;
-  color: red;
-  font-weight: bold;
-}
-
-pre {
-  background: #f4f4f4;
-  padding: 10px;
+/* Results cards */
+.results-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  max-width: 700px;
+  width: 100%;
   text-align: left;
-  max-width: 600px;
+}
+
+.results-card h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.results-card pre {
+  background: #f9f9f9;
+  padding: 10px;
   border-radius: 6px;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
-/* === Analysis Cards === */
-.card {
-  border: 1px solid #ddd;
+/* Analysis cards inside */
+.analysis-card {
+  border: 1px solid #eee;
+  padding: 0.75rem;
+  margin-bottom: 0.8rem;
   border-radius: 8px;
-  padding: 12px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 600px;
-  text-align: left;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.card h4,
-.card h5 {
-  margin: 0;
-  color: #333;
+.analysis-card h4 {
+  margin: 0 0 0.3rem;
 }
 
-.card .desc {
+.effect {
+  display: inline-block;
+  margin-top: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
   font-size: 0.9rem;
-  color: #555;
-  margin: 6px 0;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
-/* === Match types === */
+.effect.beneficial {
+  background: #eafaf1;
+  color: #27ae60;
+}
+
+.effect.harmful {
+  background: #fdecea;
+  color: #c0392b;
+}
+
+.effect.neutral {
+  background: #f4f4f4;
+  color: #555;
+}
+
+/* Error card */
+.error-card {
+  border-left: 5px solid #e74c3c;
+  background: #fdecea;
+  color: #c0392b;
+}
+.collapsible-header {
+  cursor: pointer;
+  color: #2c3e50;
+  transition: color 0.3s ease;
+}
+
+.collapsible-header:hover {
+  color: #4a90e2;
+}
+
 .product-summary {
   background: #eef6ff;
-  border-left: 5px solid #007bff;
-}
-
-.ingredient-match {
-  background: #f9f9f9;
+  border-left: 4px solid #5ba3f6;
+  font-weight: bold;
 }
 
 .submatch {
   margin-left: 20px;
   font-style: italic;
-  background: #fefefe;
+  background: #fafafa;
 }
 
 .info {
-  color: #666;
+  color: #777;
   font-style: italic;
-}
-
-/* === Effect Labels === */
-.effect {
-  display: inline-block;
-  padding: 2px 6px;
-  margin-top: 5px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  text-transform: capitalize;
-}
-
-.effect.beneficial {
-  background: #d4edda;
-  color: #155724;
-}
-
-.effect.harmful {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.effect.neutral {
-  background: #e2e3e5;
-  color: #383d41;
 }
 

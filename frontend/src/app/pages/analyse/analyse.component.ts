@@ -19,6 +19,9 @@ export class AnalyseComponent {
   raw: string | null = null;   // ✅ fallback için
   isLoading: boolean = false;
   error: string | null = null;
+  isTextExpanded: boolean = false;
+  isIngredientsExpanded: boolean = false;
+
 
   constructor(private http: HttpClient, private supabaseService: SupabaseService) {}
 
@@ -87,6 +90,9 @@ export class AnalyseComponent {
       });
   }
 
+// ✅ Shelf ile karşılaştırma
+isComparing: boolean = false;
+
 analyseWithShelf() {
   if (this.ingredients.length === 0) return;
 
@@ -96,14 +102,18 @@ analyseWithShelf() {
     return;
   }
 
+  this.isComparing = true;
+  this.error = null;
+
   this.http.post<any>('http://localhost:3000/compare', {
     userId,
     ingredients: this.ingredients.map(i => i.name)
   }).subscribe({
     next: (res) => {
+      this.isComparing = false;
       this.analysis = [];
 
-      // ✅ Ürün bazlı benzerlikler
+      // ✅ Sadece ürün bazlı özetleri ve altına matchedIngredients
       if (res.productSimilarities && res.productSimilarities.length > 0) {
         res.productSimilarities.forEach((p: any) => {
           this.analysis.push({
@@ -124,11 +134,8 @@ analyseWithShelf() {
             });
           }
         });
-      }
-
-      // ✅ Hiç eşleşme yoksa mesaj
-      if ((!res.matches || res.matches.length === 0) &&
-          (!res.productSimilarities || res.productSimilarities.length === 0)) {
+      } else {
+        // ✅ Hiç eşleşme yoksa tek mesaj
         this.analysis.push({
           type: "info",
           name: "ℹ️ No similarities found",
@@ -138,6 +145,7 @@ analyseWithShelf() {
       }
     },
     error: () => {
+      this.isComparing = false;
       this.error = "Comparison failed.";
     }
   });

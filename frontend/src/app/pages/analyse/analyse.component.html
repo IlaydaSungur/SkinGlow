@@ -1,50 +1,88 @@
 <div class="page-container">
   <h1>Analyse</h1>
 
-  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-  <button (click)="processImage()" [disabled]="isLoading">
-    {{ isLoading ? 'Analysing...' : 'Analyse' }}
-  </button>
+  <!-- Upload + Analyse -->
+  <div class="upload-section">
+    <label for="file-upload" class="custom-file-upload">
+      {{ selectedFile ? selectedFile.name : 'Choose File' }}
+    </label>
+    <input
+      id="file-upload"
+      type="file"
+      (change)="onFileSelected($event)"
+      accept="image/*"
+    />
 
-  <button (click)="analyseWithShelf()" [disabled]="isLoading || ingredients.length === 0">
-    Compare with My Shelf
-  </button>
-
-  <div *ngIf="error" class="error">{{ error }}</div>
-
-  <div *ngIf="extractedText">
-    <h3>Extracted Text:</h3>
-    <pre>{{ extractedText }}</pre>
+    <button class="analyse-btn" (click)="processImage()" [disabled]="isLoading || !selectedFile">
+      {{ isLoading ? 'Analysing...' : 'Analyse' }}
+    </button>
   </div>
 
-  <div *ngIf="ingredients.length > 0">
-    <h3>Ingredients:</h3>
-    <ul>
-      <li *ngFor="let item of ingredients">
-        {{ item.name }}
-      </li>
+  <!-- Compare with Shelf -->
+  <button 
+    class="shelf-btn" 
+    (click)="analyseWithShelf()" 
+    [disabled]="isLoading || ingredients.length === 0 || isComparing">
+    {{ isComparing ? 'Comparing...' : 'Compare with My Shelf' }}
+  </button>
+
+
+  <!-- Error -->
+  <div *ngIf="error" class="results-card error-card">
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Extracted Text -->
+  <div *ngIf="extractedText" class="results-card">
+    <h3 (click)="isTextExpanded = !isTextExpanded" class="collapsible-header">
+      {{ isTextExpanded ? 'Click to collapse Extracted Text' : 'Click to expand Extracted Text' }}
+    </h3>
+    <pre *ngIf="isTextExpanded">{{ extractedText }}</pre>
+  </div>
+
+
+  <!-- Ingredients -->
+  <div *ngIf="ingredients.length > 0" class="results-card">
+    <h3 (click)="isIngredientsExpanded = !isIngredientsExpanded" class="collapsible-header">
+      {{ isIngredientsExpanded ? 'Click to collapse Ingredients' : 'Click to expand Ingredients' }}
+    </h3>
+    <ul *ngIf="isIngredientsExpanded">
+      <li *ngFor="let item of ingredients">{{ item.name }}</li>
     </ul>
   </div>
 
-  <div *ngIf="analysis.length > 0">
-    <h3>Analysis:</h3>
-    <div *ngFor="let item of analysis"
-         class="card"
-         [ngClass]="{
-           'product-summary': item.type === 'product',
-           'submatch': item.type === 'submatch',
-           'info': item.type === 'info'
-         }">
-      <h4 *ngIf="item.type === 'product'">{{ item.name }}</h4>
-      <h5 *ngIf="item.type === 'submatch'">{{ item.name }}</h5>
-      <span *ngIf="item.type === 'info'">{{ item.name }}</span>
-      <p class="desc">{{ item.description }}</p>
-    </div>
-  </div>
 
-  <div *ngIf="!ingredients.length && !analysis.length && raw">
-    <h3>Raw Result:</h3>
-    <pre>{{ raw }}</pre>
+<!-- Analysis -->
+<div *ngIf="analysis.length > 0" class="results-card">
+  <h3>Analysis</h3>
+  <div *ngFor="let item of analysis" class="analysis-card"
+       [ngClass]="{
+         'product-summary': item.type === 'product',
+         'submatch': item.type === 'submatch',
+         'info': item.type === 'info'
+       }">
+    <h4 *ngIf="item.type === 'product'">{{ item.name }}</h4>
+    <h5 *ngIf="item.type === 'submatch'">{{ item.name }}</h5>
+    <span *ngIf="item.type === 'match' || item.type === 'info'">{{ item.name }}</span>
+    <p>{{ item.description }}</p>
+    <span
+      class="effect"
+      [ngClass]="{
+        beneficial: item.effect === 'beneficial',
+        harmful: item.effect === 'harmful',
+        neutral: item.effect === 'neutral'
+      }"
+    >
+      {{ item.effect }}
+    </span>
   </div>
 </div>
 
+
+  <!-- Raw fallback -->
+  <div *ngIf="!ingredients.length && !analysis.length && raw" class="results-card">
+    <h3>Raw Result</h3>
+    <pre>{{ raw }}</pre>
+  </div>
+</div>
