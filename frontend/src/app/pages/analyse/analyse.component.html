@@ -97,6 +97,16 @@
     </div>
   </div>
 
+  <!-- Add to Shelf -->
+  <button
+  class="shelf-btn"
+  (click)="addToShelf()"
+  [disabled]="isLoading || ingredients.length === 0"
+  >
+  Add to My Shelf
+  </button>
+
+
   <!-- Raw fallback -->
   <div
     *ngIf="!ingredients.length && !analysis.length && raw"

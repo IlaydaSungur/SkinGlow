@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http'
 import * as Tesseract from 'tesseract.js'
 import { SupabaseService } from 'src/app/core/supabase.service' // ✅ kullanıcı id almak için
 
+
+
+
 @Component({
   selector: 'app-analyse',
   standalone: true,
@@ -30,6 +33,36 @@ export class AnalyseComponent {
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0]
   }
+
+  addToShelf() {
+    const userId = this.supabaseService.user?.id;
+    if (!userId) {
+      console.error('User ID yok!');
+      alert('User not found');
+      return;
+    }
+  
+    const product = {
+      name: this.selectedFile?.name || 'Analysed Product',
+      brand: 'Unknown',
+      type: 'other',
+      ingredients: this.ingredients.map(i => i.name)
+    };
+  
+    console.log('Sending to shelf:', product);
+  
+    this.http.post(`http://localhost:3000/shelf/${userId}`, product).subscribe({
+      next: (res) => {
+        console.log('✅ Success:', res);
+        alert('Product added to shelf!');
+      },
+      error: (err) => {
+        console.error('❌ ERROR:', err);
+        alert('Failed to add product:\n' + (err?.error?.error || err?.message || 'Unknown error'));
+      }
+    });
+  }
+  
 
   processImage() {
     if (!this.selectedFile) return

@@ -21,3 +21,31 @@ router.get('/:userId', async (req, res) => {
 
 module.exports = router;
 
+router.post('/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { name, brand, type, ingredients } = req.body;
+
+  if (!name || !brand || !type || !ingredients) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const { data, error } = await supabase
+    .from('products')
+    .insert([
+      {
+        user_id: userId,
+        name,
+        brand,
+        type,
+        ingredients,
+      },
+    ]);
+
+  if (error) {
+    console.error('Shelf insert error:', error);
+    return res.status(500).json({ error: 'Failed to add product to shelf' });
+  }
+
+  res.status(201).json({ message: 'Product added successfully', data });
+});
+
