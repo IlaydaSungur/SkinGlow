@@ -87,8 +87,6 @@ export class AnalyseComponent {
       });
   }
 
-  // ✅ Shelf ile karşılaştırma
-
 analyseWithShelf() {
   if (this.ingredients.length === 0) return;
 
@@ -98,24 +96,45 @@ analyseWithShelf() {
     return;
   }
 
-  // ✅ Artık shelf'i frontend çekmiyor, backend Supabase'den alıyor
   this.http.post<any>('http://localhost:3000/compare', {
     userId,
     ingredients: this.ingredients.map(i => i.name)
   }).subscribe({
     next: (res) => {
-      if (res.matches.length === 0) {
-        this.analysis = [{
-          name: "No similarities found",
-          description: "",
-          effect: "neutral"
-        }];
-      } else {
-        this.analysis = res.matches.map((m: any) => ({
-          name: `${m.ingredient} ↔ ${m.shelfItem}`,
-          description: `Similarity: ${m.similarity}`,  // yüzde backend'den geliyor
-          effect: 'neutral'
-        }));
+      this.analysis = [];
+
+      // ✅ Ürün bazlı benzerlikler
+      if (res.productSimilarities && res.productSimilarities.length > 0) {
+        res.productSimilarities.forEach((p: any) => {
+          this.analysis.push({
+            type: "product",
+            name: `📊 ${p.productName}`,
+            description: `Overall similarity: ${p.similarity}`,
+            effect: parseFloat(p.similarity) > 60 ? "neutral" : "none"
+          });
+
+          if (p.matchedIngredients && p.matchedIngredients.length > 0) {
+            p.matchedIngredients.forEach((mi: any) => {
+              this.analysis.push({
+                type: "submatch",
+                name: `↳ ${mi.ingredient} ↔ ${mi.shelfItem}`,
+                description: `Similarity: ${mi.similarity}`,
+                effect: "neutral"
+              });
+            });
+          }
+        });
+      }
+
+      // ✅ Hiç eşleşme yoksa mesaj
+      if ((!res.matches || res.matches.length === 0) &&
+          (!res.productSimilarities || res.productSimilarities.length === 0)) {
+        this.analysis.push({
+          type: "info",
+          name: "ℹ️ No similarities found",
+          description: "This product does not match with any of your shelf items.",
+          effect: "none"
+        });
       }
     },
     error: () => {
@@ -123,6 +142,8 @@ analyseWithShelf() {
     }
   });
 }
+
+
 
 
 }
