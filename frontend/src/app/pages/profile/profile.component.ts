@@ -13,6 +13,7 @@ import { User } from '@supabase/supabase-js'
 import {
   UserProfile,
   ProfileUpdateRequest,
+  ProfileResponse,
 } from '../../core/interfaces/profile.interface'
 
 @Component({
@@ -69,12 +70,12 @@ export class ProfileComponent implements OnInit {
     this.error = null
 
     this.apiService.getUserProfile().subscribe({
-      next: (response) => {
+      next: (response: ProfileResponse) => {
         this.profile = response.profile
         this.populateForm()
         this.isLoading = false
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading profile:', error)
         this.error = 'Failed to load profile data'
         this.isLoading = false
@@ -129,7 +130,7 @@ export class ProfileComponent implements OnInit {
     }
 
     this.apiService.updateUserProfile(updateData).subscribe({
-      next: (response) => {
+      next: (response: { message: string; profile: UserProfile }) => {
         this.profile = response.profile
         this.success = 'Profile updated successfully!'
         this.isEditing = false
@@ -140,7 +141,7 @@ export class ProfileComponent implements OnInit {
           this.success = null
         }, 3000)
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error updating profile:', error)
         this.error = error.error?.message || 'Failed to update profile'
         this.isUpdating = false
