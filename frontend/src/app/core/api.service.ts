@@ -3,6 +3,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable, from } from 'rxjs'
 import { SupabaseService } from './supabase.service'
 import { environment } from '../../environments/environment'
+import {
+  ProfileResponse,
+  ProfileUpdateRequest,
+} from './interfaces/profile.interface'
 
 @Injectable({
   providedIn: 'root',
@@ -95,7 +99,13 @@ export class ApiService {
     return this.makeAuthenticatedRequest('POST', '/analysis', data)
   }
 
-  getUserProfile(): Observable<any> {
+  getUserProfile(): Observable<ProfileResponse> {
     return this.makeAuthenticatedRequest('GET', '/profile')
+  }
+
+  updateUserProfile(
+    profileData: ProfileUpdateRequest
+  ): Observable<{ message: string; profile: any }> {
+    return this.makeAuthenticatedRequest('PUT', '/profile', profileData)
   }
 }

@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { authenticateToken, optionalAuth } = require('../middleware/auth')
+const supabase = require('../config/supabase')
 
 // Public route - no authentication required
 router.get('/health', (req, res) => {
@@ -80,23 +81,129 @@ router.post('/analysis', authenticateToken, (req, res) => {
   })
 })
 
-// Protected route - user profile
-router.get('/profile', authenticateToken, (req, res) => {
-  res.json({
-    message: 'User profile data',
-    user: {
+// Protected route - get user profile
+router.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    // Get profile data from profiles table
+    const { data: profileData, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', req.user.id)
+      .single()
+
+    if (error && error.code !== 'PGRST116') {
+      // PGRST116 is "not found" error
+      console.error('Profile fetch error:', error)
+      return res.status(500).json({
+        error: 'Failed to fetch profile',
+        details: error.message,
+      })
+    }
+
+    res.json({
+      message: 'User profile data',
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        created_at: req.user.created_at,
+        last_sign_in: req.user.last_sign_in_at,
+        email_confirmed: req.user.email_confirmed_at ? true : false,
+      },
+      profile: profileData || {
+        id: req.user.id,
+        full_name: null,
+        age: null,
+        gender: null,
+        birth_date: null,
+        country: null,
+        skin_condition: null,
+        allergies: null,
+        created_at: null,
+        updated_at: null,
+      },
+    })
+  } catch (error) {
+    console.error('Profile API error:', error)
+    res.status(500).json({
+      error: 'Internal server error',
+      details: error.message,
+    })
+  }
+})
+
+// Protected route - update user profile
+router.put('/profile', authenticateToken, async (req, res) => {
+  try {
+    const {
+      full_name,
+      age,
+      gender,
+      birth_date,
+      country,
+      skin_condition,
+      allergies,
+    } = req.body
+
+    // Validate age if provided
+    if (age !== null && age !== undefined && (age < 0 || age > 150)) {
+      return res.status(400).json({
+        error: 'Invalid age',
+        message: 'Age must be between 0 and 150',
+      })
+    }
+
+    // Validate gender if provided
+    const validGenders = ['male', 'female', 'non-binary', 'prefer-not-to-say']
+    if (gender && !validGenders.includes(gender.toLowerCase())) {
+      return res.status(400).json({
+        error: 'Invalid gender',
+        message:
+          'Gender must be one of: male, female, non-binary, prefer-not-to-say',
+      })
+    }
+
+    // Prepare the data for upsert
+    const profileData = {
       id: req.user.id,
-      email: req.user.email,
-      created_at: req.user.created_at,
-      last_sign_in: req.user.last_sign_in_at,
-      email_confirmed: req.user.email_confirmed_at ? true : false,
-    },
-    preferences: {
-      skin_type: 'combination',
-      concerns: ['anti-aging', 'hydration'],
-      routine_reminder: true,
-    },
-  })
+      full_name: full_name || null,
+      age: age || null,
+      gender: gender ? gender.toLowerCase() : null,
+      birth_date: birth_date || null,
+      country: country || null,
+      skin_condition: skin_condition || null,
+      allergies: allergies || null,
+      updated_at: new Date().toISOString(),
+    }
+
+    // Use upsert to create or update profile
+    const { data: updatedProfile, error } = await supabase
+      .from('profiles')
+      .upsert(profileData, {
+        onConflict: 'id',
+        returning: 'representation',
+      })
+      .select()
+      .single()
+
+    if (error) {
+      console.error('Profile update error:', error)
+      return res.status(500).json({
+        error: 'Failed to update profile',
+        details: error.message,
+      })
+    }
+
+    res.json({
+      message: 'Profile updated successfully',
+      profile: updatedProfile,
+    })
+  } catch (error) {
+    console.error('Profile update API error:', error)
+    res.status(500).json({
+      error: 'Internal server error',
+      details: error.message,
+    })
+  }
 })
 
 // Protected route - save user routine

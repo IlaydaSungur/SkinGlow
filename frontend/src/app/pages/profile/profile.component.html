@@ -1,20 +1,228 @@
 <div class="profile-container">
   <div class="profile-card">
-    <h1>User Profile</h1>
-    <div *ngIf="user" class="user-info">
-      <div class="info-item">
-        <label>Email:</label>
-        <span>{{ user.email }}</span>
+    <div class="profile-header">
+      <h1>User Profile</h1>
+      <button
+        *ngIf="!isEditing && profile"
+        (click)="toggleEdit()"
+        class="edit-btn"
+        [disabled]="isLoading"
+      >
+        ✏️ Edit Profile
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading">Loading profile information...</div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+      <button (click)="loadProfile()" class="retry-btn">Retry</button>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="success" class="success-message">
+      {{ success }}
+    </div>
+
+    <!-- Profile Content -->
+    <div *ngIf="user && !isLoading" class="profile-content">
+      <!-- Account Information (Read-only) -->
+      <div class="account-section">
+        <h2>Account Information</h2>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Email:</label>
+            <span>{{ user.email }}</span>
+          </div>
+          <div class="info-item">
+            <label>Account Created:</label>
+            <span>{{ user.created_at | date : 'medium' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Last Sign In:</label>
+            <span>{{ user.last_sign_in_at | date : 'medium' }}</span>
+          </div>
+        </div>
       </div>
-      <div class="info-item">
-        <label>User ID:</label>
-        <span>{{ user.id }}</span>
-      </div>
-      <div class="info-item">
-        <label>Created:</label>
-        <span>{{ user.created_at | date : 'medium' }}</span>
+
+      <!-- Profile Information -->
+      <div class="profile-section">
+        <h2>Profile Information</h2>
+
+        <!-- View Mode -->
+        <div *ngIf="!isEditing" class="info-grid">
+          <div class="info-item">
+            <label>Full Name:</label>
+            <span>{{ profile?.full_name || 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Age:</label>
+            <span>{{ profile?.age || 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Gender:</label>
+            <span>{{
+              profile?.gender ? (profile?.gender | titlecase) : 'Not provided'
+            }}</span>
+          </div>
+          <div class="info-item">
+            <label>Birth Date:</label>
+            <span>{{
+              profile?.birth_date
+                ? (profile?.birth_date | date : 'mediumDate')
+                : 'Not provided'
+            }}</span>
+          </div>
+          <div class="info-item">
+            <label>Country:</label>
+            <span>{{ profile?.country || 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Skin Condition:</label>
+            <span>{{ profile?.skin_condition || 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Allergies:</label>
+            <span>{{ profile?.allergies || 'None specified' }}</span>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <form
+          *ngIf="isEditing"
+          [formGroup]="profileForm"
+          (ngSubmit)="saveProfile()"
+          class="profile-form"
+        >
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="full_name">Full Name</label>
+              <input
+                type="text"
+                id="full_name"
+                formControlName="full_name"
+                class="form-input"
+                placeholder="Enter your full name"
+              />
+              <div *ngIf="getFieldError('full_name')" class="field-error">
+                {{ getFieldError('full_name') }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="age">Age</label>
+              <input
+                type="number"
+                id="age"
+                formControlName="age"
+                class="form-input"
+                placeholder="Enter your age"
+                min="0"
+                max="150"
+              />
+              <div *ngIf="getFieldError('age')" class="field-error">
+                {{ getFieldError('age') }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select id="gender" formControlName="gender" class="form-select">
+                <option value="">Select gender</option>
+                <option
+                  *ngFor="let option of genderOptions"
+                  [value]="option.value"
+                >
+                  {{ option.label }}
+                </option>
+              </select>
+              <div *ngIf="getFieldError('gender')" class="field-error">
+                {{ getFieldError('gender') }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="birth_date">Birth Date</label>
+              <input
+                type="date"
+                id="birth_date"
+                formControlName="birth_date"
+                class="form-input"
+              />
+              <div *ngIf="getFieldError('birth_date')" class="field-error">
+                {{ getFieldError('birth_date') }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="country">Country</label>
+              <input
+                type="text"
+                id="country"
+                formControlName="country"
+                class="form-input"
+                placeholder="Enter your country"
+              />
+              <div *ngIf="getFieldError('country')" class="field-error">
+                {{ getFieldError('country') }}
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="skin_condition">Skin Condition</label>
+              <input
+                type="text"
+                id="skin_condition"
+                formControlName="skin_condition"
+                class="form-input"
+                placeholder="e.g., Oily, Dry, Combination, Sensitive"
+              />
+              <div *ngIf="getFieldError('skin_condition')" class="field-error">
+                {{ getFieldError('skin_condition') }}
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label for="allergies">Allergies</label>
+              <textarea
+                id="allergies"
+                formControlName="allergies"
+                class="form-textarea"
+                placeholder="List any known allergies or sensitivities"
+                rows="3"
+              ></textarea>
+              <div *ngIf="getFieldError('allergies')" class="field-error">
+                {{ getFieldError('allergies') }}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              (click)="toggleEdit()"
+              class="cancel-btn"
+              [disabled]="isUpdating"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="save-btn"
+              [disabled]="isUpdating || profileForm.invalid"
+            >
+              <span *ngIf="isUpdating">Saving...</span>
+              <span *ngIf="!isUpdating">Save Changes</span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-    <div *ngIf="!user" class="loading">Loading user information...</div>
+
+    <div *ngIf="!user && !isLoading" class="no-user">
+      Please log in to view your profile.
+    </div>
   </div>
 </div>
