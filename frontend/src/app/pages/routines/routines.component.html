@@ -1,4 +1,126 @@
-<div class="page-container">
-  <h1>Routines</h1>
-  <p>Your skincare routines will be displayed here.</p>
+<div class="routines-container">
+  <div class="routines-header">
+    <h1>Skincare Routines</h1>
+    <p class="header-subtitle">
+      Personalized step-by-step routines based on your shelf products
+    </p>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-navigation">
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'morning'"
+      (click)="switchTab('morning')"
+    >
+      <span class="tab-text">Morning</span>
+    </button>
+
+    <button
+      class="tab-button"
+      [class.active]="activeTab === 'night'"
+      (click)="switchTab('night')"
+    >
+      <span class="tab-text">Night</span>
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isGenerating" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Generating your personalized routine...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !isGenerating" class="error-container">
+    <h3>Unable to Generate Routine</h3>
+    <p>{{ error }}</p>
+    <button class="retry-button" (click)="regenerateRoutine()">
+      <span>Try Again</span>
+    </button>
+  </div>
+
+  <!-- Routine Content -->
+  <div
+    *ngIf="getCurrentRoutine() && !isGenerating && !error"
+    class="routine-content"
+  >
+    <!-- Routine Header -->
+    <div class="routine-header">
+      <h2>{{ getRoutineTitle() }}</h2>
+      <div class="routine-meta">
+        <div class="meta-item">
+          <span class="meta-label">Duration:</span>
+          <span>{{ getCurrentRoutine()?.totalTime }}</span>
+        </div>
+        <button class="regenerate-button" (click)="regenerateRoutine()">
+          <span>Regenerate</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Benefits Section -->
+    <div *ngIf="getCurrentRoutine()?.benefits" class="info-section benefits">
+      <h3>Benefits</h3>
+      <p>{{ getCurrentRoutine()?.benefits }}</p>
+    </div>
+
+    <!-- Routine Steps -->
+    <div class="routine-steps">
+      <div
+        *ngFor="let step of getCurrentRoutine()?.routine; let i = index"
+        class="routine-step"
+        [class.delay-animation]="true"
+        [style.animation-delay]="i * 0.1 + 's'"
+      >
+        <div class="step-number">
+          <span>{{ step.step }}</span>
+        </div>
+
+        <div class="step-content">
+          <div class="step-header">
+            <h3 class="step-title">{{ step.title }}</h3>
+            <div class="step-product">
+              <span class="product-name">{{ step.product }}</span>
+              <span *ngIf="step.brand" class="product-brand"
+                >by {{ step.brand }}</span
+              >
+            </div>
+          </div>
+
+          <div class="step-description">
+            <p>{{ step.description }}</p>
+          </div>
+
+          <div class="step-footer">
+            <div *ngIf="step.waitTime" class="wait-time">
+              <span class="footer-label">Wait:</span>
+              <span>{{ step.waitTime }}</span>
+            </div>
+
+            <div *ngIf="step.tips" class="step-tips">
+              <span class="footer-label">Tip:</span>
+              <span>{{ step.tips }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Warnings Section -->
+    <div *ngIf="getCurrentRoutine()?.warnings" class="info-section warnings">
+      <h3>Important Notes</h3>
+      <p>{{ getCurrentRoutine()?.warnings }}</p>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+      <button class="action-button primary" (click)="regenerateRoutine()">
+        <span>Regenerate Routine</span>
+      </button>
+      <button class="action-button secondary" routerLink="/shelf">
+        <span>View Shelf</span>
+      </button>
+    </div>
+  </div>
 </div>

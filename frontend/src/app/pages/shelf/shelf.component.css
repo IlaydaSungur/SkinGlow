@@ -1,56 +1,76 @@
 .shelf-container {
-  padding: 2rem;
+  padding: var(--spacing-xl);
   text-align: center;
-  background-color: #ffffff;
+  background-color: var(--background-color);
 }
 
 .shelf-title {
-  color: #82aeff;
-  font-size: 2rem;
-  margin-bottom: 2rem;
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--spacing-xl);
+  font-weight: 600;
 }
 
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
-  padding: 1rem 0;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-md) 0;
 }
 
 .product-card {
-  border: 1px solid #ccc;
-  border-radius: 1rem;
-  padding: 1rem;
-  background-color: #fefefe;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  background-color: var(--background-color);
+  box-shadow: 0 2px 8px var(--shadow-light);
   text-align: left;
+  transition: all var(--transition-medium);
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px var(--shadow-medium);
+  border-color: var(--border-dark);
 }
 
 .product-card h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.2rem;
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: var(--font-size-lg);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .product-card p {
-  margin: 0.2rem 0;
-  font-size: 0.9rem;
+  margin: var(--spacing-xs) 0;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
 }
 
 .product-card ul {
-  padding-left: 1.2rem;
-  margin: 0.2rem 0;
+  padding-left: var(--spacing-lg);
+  margin: var(--spacing-xs) 0;
+  color: var(--text-secondary);
 }
 
 .add-button {
-  background-color: #99c8ff;
-  color: black;
-  width: 50px;
-  height: 50px;
-  font-size: 2rem;
+  background-color: var(--primary-color);
+  color: white;
+  width: 56px;
+  height: 56px;
+  font-size: var(--font-size-2xl);
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  margin-top: 2rem;
+  margin-top: var(--spacing-xl);
+  transition: all var(--transition-medium);
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+.add-button:hover {
+  background-color: var(--primary-light);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px var(--shadow-dark);
 }
 .modal {
   position: fixed;
@@ -66,50 +86,77 @@
 }
 
 .modal-content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 1rem;
+  background-color: var(--background-color);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px var(--shadow-dark);
+  border: 1px solid var(--border-color);
 }
 
 .modal-content input,
 .modal-content select {
   width: 100%;
-  padding: 0.6rem;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  padding: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background-color: var(--background-color);
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
+}
+
+.modal-content input:focus,
+.modal-content select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
 }
 .card-buttons {
-  margin-top: 1rem;
+  margin-top: var(--spacing-md);
   display: flex;
   justify-content: space-between;
+  gap: var(--spacing-sm);
 }
 
 .card-buttons button {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  border-radius: 6px;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  background-color: #e3e3e3;
-  transition: 0.2s;
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  transition: all var(--transition-medium);
 }
 
 .card-buttons button:hover {
-  background-color: #ccc;
+  background-color: var(--background-tertiary);
+  border-color: var(--border-dark);
+}
+
+.card-buttons button.delete {
+  background-color: var(--error-light);
+  color: var(--error-color);
+  border-color: var(--error-color);
+}
+
+.card-buttons button.delete:hover {
+  background-color: var(--error-color);
+  color: white;
 }
 
 /* Image container that gives the image a fixed area */
 .image-wrap {
   position: relative;
   width: 100%;
-  height: 220px; /* adjust to taste */
-  margin-bottom: 0.75rem;
-  border-radius: 0.75rem;
+  height: 220px;
+  margin-bottom: var(--spacing-md);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: #f5f7fb;
+  background: var(--background-secondary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,77 +176,95 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 0.5rem 0.75rem;
-  background: rgba(0, 0, 0, 0.45);
-  color: #fff;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(30, 58, 138, 0.8);
+  color: white;
   text-align: center;
+  backdrop-filter: blur(4px);
 }
 
 .overlay-title {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--font-size-base);
   line-height: 1.1;
 }
 
 .overlay-brand {
-  font-size: 0.85rem;
-  opacity: 0.95;
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
 }
 
 .type-line {
-  margin: 0.25rem 0 0.5rem;
+  margin: var(--spacing-xs) 0 var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
 }
 
 .expand-hint,
 .collapse-hint {
   text-align: center;
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 0.5rem;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-sm);
   cursor: pointer;
+  transition: color var(--transition-medium);
+}
+
+.expand-hint:hover,
+.collapse-hint:hover {
+  color: var(--text-primary);
 }
 
 .ingredients-list {
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
-  background: #f9f9f9;
-  border-radius: 6px;
-  padding: 0.5rem 0.75rem;
+  margin-top: var(--spacing-md);
+  font-size: var(--font-size-sm);
+  background: var(--background-secondary);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
   cursor: pointer;
+  border: 1px solid var(--border-light);
+  transition: all var(--transition-medium);
+}
+
+.ingredients-list:hover {
+  background: var(--background-tertiary);
+  border-color: var(--border-color);
 }
 .filter-bar {
-  margin: 1rem 0;
+  margin: var(--spacing-md) 0;
   text-align: center;
 }
 
 .filter-bar label {
-  margin-right: 0.75rem;
+  margin-right: var(--spacing-md);
   font-weight: 600;
-  color: #444;
+  color: var(--text-primary);
+  font-size: var(--font-size-base);
 }
 
 .styled-select {
-  padding: 0.5rem 1.2rem;
-  font-size: 1rem;
-  /*border: 2px solid #4A90E2;   /* pretty border */
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  color: #333;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--background-color);
+  color: var(--text-primary);
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all var(--transition-medium);
   outline: none;
-  appearance: none; /* remove browser default arrow */
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='none' stroke='%234A90E2' stroke-width='2' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='none' stroke='%231e3a8a' stroke-width='2' d='M1 1l6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.8rem center;
   background-size: 12px;
 }
 
 .styled-select:hover {
-  background-color: #eef6ff;
+  background-color: var(--background-secondary);
+  border-color: var(--border-dark);
 }
 
 .styled-select:focus {
-  border-color: #2C6ED5;
-  box-shadow: 0 0 4px rgba(44, 110, 213, 0.4);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
 }

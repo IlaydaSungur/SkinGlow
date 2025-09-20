@@ -3,129 +3,136 @@
   justify-content: center;
   align-items: center;
   min-height: 80vh;
-  padding: 20px;
-  background-color: #f8fafc;
+  padding: var(--spacing-lg);
+  background-color: var(--background-secondary);
 }
 
 .signup-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 2rem;
+  background: var(--background-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 16px var(--shadow-light);
+  padding: var(--spacing-xl);
   width: 100%;
   max-width: 400px;
+  border: 1px solid var(--border-color);
 }
 
 .signup-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: var(--spacing-xl);
 }
 
 .signup-header h1 {
-  color: #1f2937;
-  font-size: 2rem;
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .signup-header p {
-  color: #6b7280;
-  font-size: 1rem;
+  color: var(--text-secondary);
+  font-size: var(--font-size-base);
 }
 
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--spacing-lg);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--spacing-sm);
 }
 
 .form-group label {
   font-weight: 500;
-  color: #374151;
-  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
 }
 
 .form-input {
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-medium);
+  background-color: var(--background-color);
+  color: var(--text-primary);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #2563eb;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
 }
 
 .form-input:disabled {
-  background-color: #f9fafb;
-  color: #6b7280;
+  background-color: var(--background-tertiary);
+  color: var(--text-muted);
 }
 
 .error-message {
-  background-color: #fee2e2;
-  color: #dc2626;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  background-color: var(--error-light);
+  color: var(--error-color);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   text-align: center;
+  border: 1px solid var(--error-color);
 }
 
 .success-message {
-  background-color: #d1fae5;
-  color: #065f46;
-  padding: 0.75rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
+  background-color: var(--success-light);
+  color: var(--success-color);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   text-align: center;
+  border: 1px solid var(--success-color);
 }
 
 .signup-btn {
-  background-color: #2563eb;
+  background-color: var(--primary-color);
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: var(--spacing-md) var(--spacing-lg);
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color var(--transition-medium);
 }
 
 .signup-btn:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: var(--primary-light);
 }
 
 .signup-btn:disabled {
-  background-color: #9ca3af;
+  background-color: var(--text-muted);
   cursor: not-allowed;
 }
 
 .login-link {
   text-align: center;
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
 }
 
 .login-link p {
-  color: #6b7280;
+  color: var(--text-secondary);
   margin: 0;
 }
 
 .login-link a {
-  color: #2563eb;
+  color: var(--primary-color);
   text-decoration: none;
   font-weight: 500;
 }
 
 .login-link a:hover {
   text-decoration: underline;
+  color: var(--primary-light);
 }
