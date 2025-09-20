@@ -1,6 +1,6 @@
 const express = require('express')
 const axios = require('axios')
-const supabase = require('../services/supabaseClient')
+const { supabase } = require('../services/supabaseClient')
 
 const router = express.Router()
 
