@@ -1,0 +1,225 @@
+<!-- Sidebar Toggle Button -->
+<button
+  class="sidebar-toggle-btn"
+  (click)="toggleSidebar()"
+  [class.active]="isOpen"
+  title="Daily Check-in"
+>
+  Check-in ✓
+</button>
+
+<!-- Sidebar Overlay -->
+<div
+  class="sidebar-overlay"
+  [class.open]="isOpen"
+  (click)="toggleSidebar()"
+></div>
+
+<!-- Sidebar -->
+<div class="sidebar" [class.open]="isOpen">
+  <div class="sidebar-header">
+    <h2>Check-in</h2>
+    <p class="date">{{ currentDate }}</p>
+    <button class="close-btn" (click)="toggleSidebar()">×</button>
+  </div>
+
+  <div class="sidebar-content">
+    <div class="status-indicator" *ngIf="hasCheckinToday">
+      <span class="status-badge completed">✓ Already checked in today</span>
+      <p class="status-note">You can update your check-in anytime.</p>
+    </div>
+
+    <form (ngSubmit)="submitCheckin()" #checkinForm="ngForm">
+      <!-- Lifestyle Factors -->
+      <div class="category-section">
+        <h3>Lifestyle Factors</h3>
+        <div class="category-items">
+          <div class="rating-item" *ngFor="let category of lifestyleCategories">
+            <label class="rating-label">
+              <span class="label-text">{{ category.label }}</span>
+              <span class="label-description">{{ category.description }}</span>
+            </label>
+            <div class="rating-container">
+              <input
+                type="range"
+                [min]="category.min"
+                [max]="category.max"
+                [value]="getRatingValue(category)"
+                (input)="setRatingValue(category, +$any($event.target).value)"
+                class="rating-slider"
+              />
+              <div class="rating-display">
+                <span class="rating-value"
+                  >{{ getRatingValue(category) }}/10</span
+                >
+                <span class="rating-label-text">{{
+                  getRatingLabel(getRatingValue(category))
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skin-Related -->
+      <div class="category-section">
+        <h3>Skin Condition</h3>
+        <div class="category-items">
+          <div class="rating-item" *ngFor="let category of skinCategories">
+            <label class="rating-label">
+              <span class="label-text">{{ category.label }}</span>
+              <span class="label-description">{{ category.description }}</span>
+            </label>
+            <div class="rating-container">
+              <input
+                type="range"
+                [min]="category.min"
+                [max]="category.max"
+                [value]="getRatingValue(category)"
+                (input)="setRatingValue(category, +$any($event.target).value)"
+                class="rating-slider"
+              />
+              <div class="rating-display">
+                <span class="rating-value"
+                  >{{ getRatingValue(category) }}/10</span
+                >
+                <span class="rating-label-text">{{
+                  getRatingLabel(getRatingValue(category))
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Environment/External Factors -->
+      <div class="category-section">
+        <h3>Environment & External</h3>
+        <div class="category-items">
+          <div
+            class="rating-item"
+            *ngFor="let category of environmentCategories"
+          >
+            <label class="rating-label">
+              <span class="label-text">{{ category.label }}</span>
+              <span class="label-description">{{ category.description }}</span>
+            </label>
+
+            <div class="rating-container" *ngIf="category.type === 'rating'">
+              <input
+                type="range"
+                [min]="category.min"
+                [max]="category.max"
+                [value]="getRatingValue(category)"
+                (input)="setRatingValue(category, +$any($event.target).value)"
+                class="rating-slider"
+              />
+              <div class="rating-display">
+                <span class="rating-value"
+                  >{{ getRatingValue(category) }}/10</span
+                >
+                <span class="rating-label-text">{{
+                  getRatingLabel(getRatingValue(category))
+                }}</span>
+              </div>
+            </div>
+
+            <div class="select-container" *ngIf="category.type === 'select'">
+              <select
+                [value]="getSelectValue(category)"
+                (change)="setSelectValue(category, $any($event.target).value)"
+                class="select-input"
+              >
+                <option value="">Select...</option>
+                <option
+                  *ngFor="let option of category.options"
+                  [value]="option"
+                >
+                  {{ option | titlecase }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Health/Body Factors -->
+      <div class="category-section">
+        <h3>Health & Body</h3>
+        <div class="category-items">
+          <div class="rating-item" *ngFor="let category of healthCategories">
+            <label class="rating-label">
+              <span class="label-text">{{ category.label }}</span>
+              <span class="label-description">{{ category.description }}</span>
+            </label>
+
+            <div class="rating-container" *ngIf="category.type === 'rating'">
+              <input
+                type="range"
+                [min]="category.min"
+                [max]="category.max"
+                [value]="getRatingValue(category)"
+                (input)="setRatingValue(category, +$any($event.target).value)"
+                class="rating-slider"
+              />
+              <div class="rating-display">
+                <span class="rating-value"
+                  >{{ getRatingValue(category) }}/10</span
+                >
+                <span class="rating-label-text">{{
+                  getRatingLabel(getRatingValue(category))
+                }}</span>
+              </div>
+            </div>
+
+            <div class="select-container" *ngIf="category.type === 'select'">
+              <select
+                [value]="getSelectValue(category)"
+                (change)="setSelectValue(category, $any($event.target).value)"
+                class="select-input"
+              >
+                <option value="">Select...</option>
+                <option
+                  *ngFor="let option of category.options"
+                  [value]="option"
+                >
+                  {{ option | titlecase }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes Section -->
+      <div class="category-section">
+        <h3>Additional Notes</h3>
+        <textarea
+          [(ngModel)]="checkinData.notes"
+          name="notes"
+          placeholder="Any additional observations, symptoms, or notes about your day..."
+          class="notes-textarea"
+          rows="4"
+        >
+        </textarea>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit-section">
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="isSubmitting"
+          [class.loading]="isSubmitting"
+        >
+          <span *ngIf="!isSubmitting">
+            {{ hasCheckinToday ? 'Update Check-in' : 'Submit Check-in' }}
+          </span>
+          <span *ngIf="isSubmitting">
+            {{ hasCheckinToday ? 'Updating...' : 'Submitting...' }}
+          </span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

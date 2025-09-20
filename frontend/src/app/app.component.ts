@@ -9,11 +9,18 @@ import {
 import { SupabaseService } from './core/supabase.service'
 import { User } from '@supabase/supabase-js'
 import { Observable } from 'rxjs'
+import { DailyCheckinSidebarComponent } from './components/daily-checkin-sidebar/daily-checkin-sidebar.component'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    DailyCheckinSidebarComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

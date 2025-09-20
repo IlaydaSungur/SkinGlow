@@ -32,4 +32,10 @@
     </div>
   </div>
 </nav>
+
 <router-outlet></router-outlet>
+
+<!-- Daily Check-in Sidebar - Only show when user is authenticated -->
+<ng-container *ngIf="user$ | async">
+  <app-daily-checkin-sidebar></app-daily-checkin-sidebar>
+</ng-container>
