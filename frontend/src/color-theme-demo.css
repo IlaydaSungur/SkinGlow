@@ -1,0 +1,65 @@
+/*
+ * COLOR THEME DEMONSTRATION
+ * ========================
+ * 
+ * This file shows how to change the entire app's color scheme 
+ * by modifying CSS variables in ONE PLACE.
+ * 
+ * To change colors across the entire application:
+ * 1. Modify the variables in frontend/src/styles.css
+ * 2. All components automatically inherit the new colors
+ * 
+ * EXAMPLE: Blue Theme
+ */
+
+:root {
+  /* Primary Colors - Change these to change the main app color */
+  --primary-color: #4d6cc0; /* Deep blue */
+  --primary-light: #4d6cc0; /* Lighter blue */
+  --primary-dark: #4d6cc0; /* Darker blue */
+
+  /* Secondary Colors - Accent color for active states */
+  --secondary-color: #4d6cc0; /* Sky blue */
+  --secondary-light: #4d6cc0; /* Light sky blue */
+  --secondary-dark: #4d6cc0; /* Dark sky blue */
+}
+
+/*
+ * EXAMPLE: Green Theme
+ * Uncomment below to switch to green theme
+ */
+/*
+:root {
+  --primary-color: #166534;
+  --primary-light: #16a34a;
+  --primary-dark: #14532d;
+  
+  --secondary-color: #059669;
+  --secondary-light: #10b981;
+  --secondary-dark: #047857;
+}
+*/
+
+/*
+ * EXAMPLE: Purple Theme
+ * Uncomment below to switch to purple theme
+ */
+/*
+:root {
+  --primary-color: #7c3aed;
+  --primary-light: #8b5cf6;
+  --primary-dark: #6d28d9;
+  
+  --secondary-color: #a855f7;
+  --secondary-light: #c084fc;
+  --secondary-dark: #9333ea;
+}
+*/
+
+/*
+ * HOW TO USE:
+ * 1. Copy the desired theme variables above
+ * 2. Paste them at the top of frontend/src/styles.css
+ * 3. Replace the existing primary and secondary color values
+ * 4. Save the file - all components will update automatically!
+ */

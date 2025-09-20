@@ -13,6 +13,7 @@ dotenv.config()
 const apiRoutes = require('./routes/api')
 const compareRouter = require('./routes/compare')
 const shelfRouter = require('./routes/shelf')
+const routinesRouter = require('./routes/routines')
 
 const app = express()
 const PORT = config.port
@@ -64,7 +65,8 @@ app.get('/', (req, res) => {
       profile: '/api/profile (protected)',
       analyse: '/api/analyse',
       compare: '/compare',
-      shelf: '/shelf/:userId'
+      shelf: '/shelf/:userId',
+      routines: '/routines/generate',
     },
   })
 })
@@ -112,21 +114,24 @@ BÖLÜM 2 → Açıklamalar (Normal Metin)
     )
 
     let raw = response.data.choices[0].message.content.trim()
-    raw = raw.replace(/```json/g, '').replace(/```/g, '').trim()
+    raw = raw
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim()
 
     try {
       const jsonMatch = raw.match(/\{[\s\S]*\}/)
       let parsed = {}
-      let explanation = ""
+      let explanation = ''
 
       if (jsonMatch) {
         parsed = JSON.parse(jsonMatch[0])
-        explanation = raw.replace(jsonMatch[0], "").trim()
+        explanation = raw.replace(jsonMatch[0], '').trim()
       }
 
       res.json({
         ingredients: parsed.ingredients || [],
-        explanation
+        explanation,
       })
     } catch (e) {
       res.json({ raw })
@@ -141,9 +146,9 @@ BÖLÜM 2 → Açıklamalar (Normal Metin)
 app.use('/api', apiRoutes)
 app.use('/compare', compareRouter)
 app.use('/shelf', shelfRouter)
+app.use('/routines', routinesRouter)
 
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ SkinGlow Backend running on port ${PORT}`)
 })
-
