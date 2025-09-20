@@ -98,13 +98,14 @@
   </div>
 
   <!-- Add to Shelf -->
-  <button
-  class="shelf-btn"
-  (click)="addToShelf()"
-  [disabled]="isLoading || ingredients.length === 0"
-  >
-  Add to My Shelf
-  </button>
+<button
+class="shelf-btn"
+(click)="openShelfModal()"
+[disabled]="isLoading || ingredients.length === 0"
+>
+Add to My Shelf
+</button>
+
 
 
   <!-- Raw fallback -->
@@ -115,4 +116,45 @@
     <h3>Raw Result</h3>
     <pre>{{ raw }}</pre>
   </div>
+
+  <!-- Add to Shelf Modal -->
+<div class="modal" *ngIf="showShelfModal">
+  <div class="modal-content">
+    <h3>Add Product to Shelf</h3>
+    <form (ngSubmit)="submitShelfForm()" #shelfForm="ngForm">
+      <input
+        type="text"
+        name="name"
+        [(ngModel)]="shelfFormData.name"
+        placeholder="Product Name"
+        required
+      />
+      <input
+        type="text"
+        name="brand"
+        [(ngModel)]="shelfFormData.brand"
+        placeholder="Brand"
+        required
+      />
+
+
+      <select name="type" [(ngModel)]="shelfFormData.type" required>
+        <option value="" disabled selected>Select Type</option>
+        <option value="moisturizer">Moisturizer</option>
+        <option value="serum">Serum</option>
+        <option value="cleanser">Cleanser</option>
+        <option value="sunscreen">Sunscreen</option>
+        <option value="other">Other</option>
+      </select>
+
+      <button type="submit">Add</button>
+      <button type="button" (click)="showShelfModal = false">Cancel</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+
 </div>
