@@ -222,3 +222,16 @@ input[type='file'] {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
+
+.safety.safe {
+  border-left: 4px solid var(--success-color);
+  background: var(--success-light);
+  color: var(--success-color);
+}
+
+.safety.harmful {
+  border-left: 4px solid var(--error-color);
+  background: var(--error-light);
+  color: var(--error-color);
+}

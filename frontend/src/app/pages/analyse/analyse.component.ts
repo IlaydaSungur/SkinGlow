@@ -129,60 +129,58 @@ export class AnalyseComponent {
   }
 
   analyseWithShelf() {
-    if (this.ingredients.length === 0) return
-
-    const userId = this.supabaseService.user?.id
+    if (this.ingredients.length === 0) return;
+  
+    const userId = this.supabaseService.user?.id;
     if (!userId) {
-      this.error = 'User not logged in'
-      return
+      this.error = 'User not logged in';
+      return;
     }
-
-    this.isComparing = true
-    this.error = null
-
+  
+    this.isComparing = true;
+    this.error = null;
+  
     this.http
       .post<any>('http://localhost:3000/compare', {
         userId,
-        ingredients: this.ingredients.map(i => i.name),
+        ingredients: this.ingredients.map((i) => i.name),
       })
       .subscribe({
         next: (res) => {
-          this.isComparing = false
-          this.analysis = []
-
+          this.isComparing = false;
+          this.analysis = [];
+  
           if (res.productSimilarities && res.productSimilarities.length > 0) {
             res.productSimilarities.forEach((p: any) => {
               this.analysis.push({
                 type: 'product',
                 name: `📊 ${p.productName}`,
                 description: `Overall similarity: ${p.similarity}`,
-                effect: parseFloat(p.similarity) > 60 ? 'neutral' : 'none',
-              })
-
-              if (p.matchedIngredients && p.matchedIngredients.length > 0) {
-                p.matchedIngredients.forEach((mi: any) => {
-                  this.analysis.push({
-                    type: 'submatch',
-                    name: `↳ ${mi.ingredient} ↔ ${mi.shelfItem}`,
-                    description: `Similarity: ${mi.similarity}`,
-                    effect: 'neutral',
-                  })
-                })
+                effect: 'neutral',
+              });
+  
+              if (p.safetyMessage.includes('not advised')) {
+                this.analysis.push({
+                  type: 'safety',
+                  name: `⚠️ Safety Check`,
+                  description: p.safetyMessage,
+                  effect: 'harmful',
+                });
+              } else {
+                this.analysis.push({
+                  type: 'safety',
+                  name: `✅ Safe to Use`,
+                  description: '',
+                  effect: 'beneficial',
+                });
               }
-            })
-          } else {
-            this.analysis.push({
-              type: 'info',
-              name: 'ℹ️ No similarities found',
-              description: 'This product does not match with any of your shelf items.',
-              effect: 'none',
-            })
+            });
           }
         },
         error: () => {
-          this.isComparing = false
-          this.error = 'Comparison failed.'
+          this.isComparing = false;
+          this.error = 'Comparison failed.';
         },
-      })
+      });
   }
 }

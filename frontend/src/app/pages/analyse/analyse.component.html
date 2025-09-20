@@ -75,28 +75,17 @@
       [ngClass]="{
         'product-summary': item.type === 'product',
         submatch: item.type === 'submatch',
+        'safety safe': item.type === 'safety' && item.effect === 'beneficial',
+        'safety harmful': item.type === 'safety' && item.effect === 'harmful',
         info: item.type === 'info'
       }"
     >
-      <h4 *ngIf="item.type === 'product'">{{ item.name }}</h4>
-      <h5 *ngIf="item.type === 'submatch'">{{ item.name }}</h5>
-      <span *ngIf="item.type === 'match' || item.type === 'info'">{{
-        item.name
-      }}</span>
-      <p>{{ item.description }}</p>
-      <span
-        class="effect"
-        [ngClass]="{
-          beneficial: item.effect === 'beneficial',
-          harmful: item.effect === 'harmful',
-          neutral: item.effect === 'neutral'
-        }"
-      >
-        {{ item.effect }}
-      </span>
+      <h4 *ngIf="item.type === 'product' || item.type === 'safety'">
+        {{ item.name }}
+      </h4>
+      <p *ngIf="item.description">{{ item.description }}</p>
     </div>
   </div>
-
   <!-- Add to Shelf -->
 <button
 class="shelf-btn"

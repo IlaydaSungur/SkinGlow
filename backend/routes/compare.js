@@ -1,16 +1,16 @@
+// filepath: /Users/meterdn/Desktop/glow/SkinGlow/backend/routes/compare.js
 const express = require('express');
 const {
   getEmbeddingsBatch,
   cosineSimilarity,
 } = require('../services/compareService');
-const { supabase } = require('../services/supabaseClient'); // ✅ düzeltildi
+const { supabase } = require('../services/supabaseClient');
+const axios = require('axios'); // For Groq API
 
 const router = express.Router();
-
 router.post('/', async (req, res) => {
   try {
     const { userId, ingredients } = req.body;
-    console.log('📥 Gelen body:', req.body);
 
     if (!userId) {
       return res.status(400).json({ error: 'userId is required' });
@@ -21,7 +21,6 @@ router.post('/', async (req, res) => {
         .json({ error: 'ingredients must be a non-empty array' });
     }
 
-    // ✅ Kullanıcının ürünlerini al
     const { data: shelfData, error } = await supabase
       .from('products')
       .select('id, name, ingredients')
@@ -42,12 +41,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    const matches = [];
     const productSimilarities = [];
-    let anyProductAboveThreshold = false;
-
-    // 🔹 Yeni ürün embeddingleri
-    const newEmbeddings = await getEmbeddingsBatch(ingredients);
 
     for (const row of shelfData) {
       const shelfIngredients = Array.isArray(row.ingredients)
@@ -56,76 +50,60 @@ router.post('/', async (req, res) => {
 
       if (shelfIngredients.length === 0) continue;
 
-      // 🔹 Raf ürünü embeddingleri
-      const shelfEmbeddings = await getEmbeddingsBatch(shelfIngredients);
+      const prompt = `
+        Task: You will be given the ingredients of two products. Determine if they are safe to use together.
+        - If safe: "It is okay to use."
+        - If not safe: "These products are not advised to be used together. Because ..." and explain why.
 
-      let matchCount = 0;
-      const productMatches = [];
+        Product 1 Ingredients: ${ingredients.join(', ')}
+        Product 2 Ingredients: ${shelfIngredients.join(', ')}
+      `;
 
-      // Pairwise karşılaştırma (lokalde)
-      for (let i = 0; i < ingredients.length; i++) {
-        for (let j = 0; j < shelfIngredients.length; j++) {
-          const score = cosineSimilarity(newEmbeddings[i], shelfEmbeddings[j]);
-          const percentScore = (score * 100).toFixed(1);
+      let safetyMessage = 'It is okay to use.';
+      try {
+        const response = await axios.post(
+          'https://api.groq.com/openai/v1/chat/completions',
+          {
+            model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+            messages: [{ role: 'user', content: prompt }],
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
 
-          console.log(
-            `🔍 ${ingredients[i]} vs ${shelfIngredients[j]} → ${percentScore}%`
-          );
+        safetyMessage = response.data.choices[0].message.content.trim();
 
-          if (score > 0.6) {
-            matchCount++;
-            productMatches.push({
-              ingredient: ingredients[i],
-              shelfItem: shelfIngredients[j],
-              similarity: percentScore + '%',
-            });
-            matches.push({
-              ingredient: ingredients[i],
-              shelfItem: shelfIngredients[j],
-              similarity: percentScore + '%',
-              productName: row.name,
-            });
+        // Limit harmful output to 70 words and append a generic recommendation
+        if (safetyMessage.includes('not advised')) {
+          const words = safetyMessage.split(' ');
+          if (words.length > 70) {
+            safetyMessage =
+              words.slice(0, 70).join(' ') +
+              '. We recommend you ask a doctor since it may be harmful to your skin.';
           }
         }
+      } catch (err) {
+        console.error('Groq API error:', err?.response?.data || err.message);
+        safetyMessage = 'Failed to check safety.';
       }
 
-      // Ürün bazlı yüzde hesapla
-      const percent = ((matchCount / ingredients.length) * 100).toFixed(1) + '%';
       productSimilarities.push({
-        productId: row.id,
         productName: row.name,
-        similarity: percent,
-        matchedIngredients: productMatches,
-      });
-
-      if (matchCount > 0) {
-        anyProductAboveThreshold = true;
-        console.log(`✅ ${row.name} bu ürünle içerikleri benzer`);
-        console.log(
-          `   Benzer içerikler:`,
-          productMatches
-            .map((m) => `${m.ingredient} ↔ ${m.shelfItem}`)
-            .join(', ')
-        );
-      } else {
-        console.log(`ℹ️ ${row.name} için %60'tan fazla benzerlik yok`);
-      }
-    }
-
-    if (!anyProductAboveThreshold) {
-      console.log('⚠️ No product similarity above threshold');
-      return res.json({
-        matches: [],
-        productSimilarities,
-        message: 'No product similarity above threshold',
+        similarity: 'N/A', // Replace with actual similarity logic if needed
+        safetyMessage,
       });
     }
 
-    res.json({ matches, productSimilarities });
+    res.json({ productSimilarities });
   } catch (err) {
     console.error('❌ Compare error:', err);
     res.status(500).json({ error: 'Comparison failed', details: err.message });
   }
 });
+
 
 module.exports = router;
