@@ -1,4 +1,4 @@
-// filepath: /Users/meterdn/Desktop/glow/SkinGlow/backend/routes/compare.js
+// filepath: routes/compare.js
 const express = require('express');
 const {
   getEmbeddingsBatch,
@@ -8,6 +8,7 @@ const { supabase } = require('../services/supabaseClient');
 const axios = require('axios'); // For Groq API
 
 const router = express.Router();
+
 router.post('/', async (req, res) => {
   try {
     const { userId, ingredients } = req.body;
@@ -27,7 +28,7 @@ router.post('/', async (req, res) => {
       .eq('user_id', userId);
 
     if (error) {
-      console.error('❌ Supabase error:', error);
+      console.error('Supabase error:', error);
       return res
         .status(500)
         .json({ error: 'Failed to fetch shelf', details: error.message });
@@ -50,6 +51,30 @@ router.post('/', async (req, res) => {
 
       if (shelfIngredients.length === 0) continue;
 
+      //  Compute embeddings for all ingredients together
+      const allTexts = [...ingredients, ...shelfIngredients];
+      let embeddings = [];
+      try {
+        embeddings = await getEmbeddingsBatch(allTexts);
+      } catch (embedErr) {
+        console.error('Embedding error:', embedErr);
+      }
+
+      // Default max similarity
+      let maxSim = 0;
+      if (embeddings.length === allTexts.length) {
+        for (let i = 0; i < ingredients.length; i++) {
+          for (let j = 0; j < shelfIngredients.length; j++) {
+            const sim = cosineSimilarity(
+              embeddings[i],
+              embeddings[ingredients.length + j]
+            );
+            if (sim > maxSim) maxSim = sim;
+          }
+        }
+      }
+
+      // 🧠 Groq safety check
       const prompt = `
         Task: You will be given the ingredients of two products. Determine if they are safe to use together.
         - If safe: "It is okay to use."
@@ -77,7 +102,7 @@ router.post('/', async (req, res) => {
 
         safetyMessage = response.data.choices[0].message.content.trim();
 
-        // Limit harmful output to 70 words and append a generic recommendation
+        // Limit harmful output length
         if (safetyMessage.includes('not advised')) {
           const words = safetyMessage.split(' ');
           if (words.length > 70) {
@@ -93,7 +118,7 @@ router.post('/', async (req, res) => {
 
       productSimilarities.push({
         productName: row.name,
-        similarity: 'N/A', // Replace with actual similarity logic if needed
+        similarity: (maxSim * 100).toFixed(1) + '%', 
         safetyMessage,
       });
     }
@@ -104,6 +129,5 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: 'Comparison failed', details: err.message });
   }
 });
-
 
 module.exports = router;
