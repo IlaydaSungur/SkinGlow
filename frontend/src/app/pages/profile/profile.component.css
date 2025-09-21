@@ -71,10 +71,10 @@
 
 .error-message {
   background: #fee;
-  color: #d32f2f;
+  color: #000000;
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
-  border: 1px solid #ffcdd2;
+  border: 1px solid #000000;
   margin-bottom: var(--spacing-lg);
   display: flex;
   justify-content: space-between;
@@ -83,17 +83,17 @@
 
 .success-message {
   background: #e8f5e8;
-  color: #2e7d32;
+  color: #000000;
   padding: var(--spacing-lg);
   border-radius: var(--radius-md);
-  border: 1px solid #c8e6c9;
+  border: 1px solid #000000;
   margin-bottom: var(--spacing-lg);
 }
 
 .retry-btn {
   background: #d32f2f;
   color: white;
-  border: none;
+  border: 1px solid #000000;
   border-radius: var(--radius-sm);
   padding: var(--spacing-xs) var(--spacing-sm);
   font-size: var(--font-size-xs);
@@ -217,7 +217,7 @@
 
 /* Field Errors */
 .field-error {
-  color: #d32f2f;
+  color: #000000;
   font-size: var(--font-size-xs);
   margin-top: var(--spacing-xs);
 }
@@ -245,7 +245,7 @@
 .cancel-btn {
   background: var(--background-secondary);
   color: var(--text-secondary);
-  border: 1px solid var(--border-color);
+  border: 1px solid #000000;
 }
 
 .cancel-btn:hover {

@@ -21,15 +21,15 @@
   --background-tertiary: #ecf0f1;
 
   /* Text Colors */
-  --text-primary: #1e293b;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --text-light: #cbd5e1;
+  --text-primary: #000000;
+  --text-secondary: #000000;
+  --text-muted: #000000;
+  --text-light: #000000;
 
   /* Border Colors */
-  --border-color: #dee2e6;
-  --border-light: #e9ecef;
-  --border-dark: #adb5bd;
+  --border-color: #000000;
+  --border-light: #000000;
+  --border-dark: #000000;
 
   /* Status Colors */
   --success-color: #27ae60;
@@ -153,7 +153,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: var(--spacing-sm) var(--spacing-lg);
-  border: 1px solid transparent;
+  border: 1px solid #000000;
   border-radius: var(--radius-md);
   font-size: var(--font-size-base);
   font-weight: 500;
@@ -167,34 +167,34 @@ body {
 .btn-primary {
   background-color: var(--primary-color);
   color: white;
-  border-color: var(--primary-color);
+  border-color: #000000;
 }
 
 .btn-primary:hover {
   background-color: var(--primary-light);
-  border-color: var(--primary-light);
+  border-color: #000000;
 }
 
 .btn-secondary {
   background-color: var(--secondary-color);
   color: white;
-  border-color: var(--secondary-color);
+  border-color: #000000;
 }
 
 .btn-secondary:hover {
   background-color: var(--secondary-light);
-  border-color: var(--secondary-light);
+  border-color: #000000;
 }
 
 .btn-outline {
   background-color: transparent;
-  color: var(--primary-color);
-  border-color: var(--border-color);
+  color: #000000;
+  border-color: #000000;
 }
 
 .btn-outline:hover {
   background-color: var(--background-secondary);
-  border-color: var(--border-dark);
+  border-color: #000000;
 }
 
 .card {

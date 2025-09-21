@@ -42,7 +42,7 @@
   flex: 1;
   max-width: 200px;
   padding: var(--spacing-md) var(--spacing-lg);
-  border: none;
+  border: 1px solid #000000;
   border-radius: var(--radius-md);
   background-color: transparent;
   color: var(--text-secondary);
@@ -126,7 +126,7 @@
 .retry-button {
   background-color: var(--error-color);
   color: white;
-  border: none;
+  border: 1px solid #000000;
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius-md);
   font-weight: 500;
@@ -189,7 +189,7 @@
 .regenerate-button {
   background-color: var(--primary-color);
   color: white;
-  border: none;
+  border: 1px solid #000000;
   padding: var(--spacing-sm) var(--spacing-md);
   border-radius: var(--radius-md);
   font-weight: 500;
@@ -372,7 +372,7 @@
 
 .action-button {
   padding: var(--spacing-md) var(--spacing-xl);
-  border: none;
+  border: 1px solid #000000;
   border-radius: var(--radius-md);
   font-weight: 500;
   cursor: pointer;
@@ -392,7 +392,7 @@
 .action-button.secondary {
   background-color: var(--background-color);
   color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  border: 1px solid #000000;
 }
 
 .action-button:hover {
@@ -406,7 +406,7 @@
 
 .action-button.secondary:hover {
   background-color: var(--background-secondary);
-  border-color: var(--border-dark);
+  border-color: #000000;
 }
 
 /* Responsive Design */
