@@ -89,6 +89,9 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Prevent horizontal scrolling */
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Utility Classes */
@@ -258,5 +261,76 @@ body.sidebar-open .sidebar-toggle-btn {
 
   body.sidebar-open .sidebar-toggle-btn {
     left: 60% !important;
+  }
+}
+
+/* Global Mobile Responsiveness Fixes */
+@media (max-width: 768px) {
+  /* Prevent horizontal scrolling */
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Ensure all containers don't exceed viewport width */
+  .container {
+    max-width: 100%;
+    padding: 0 var(--spacing-md);
+  }
+
+  /* Fix any potential wide elements */
+  * {
+    max-width: 100%;
+  }
+
+  /* Improve touch targets */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Improve text readability */
+  p,
+  span,
+  div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Further mobile optimizations */
+  .container {
+    padding: 0 var(--spacing-sm);
+  }
+
+  /* Ensure viewport units work correctly */
+  html {
+    height: -webkit-fill-available;
+  }
+
+  body {
+    min-height: -webkit-fill-available;
+  }
+
+  /* Improve form elements on mobile */
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Prevent zoom on iOS */
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: var(--radius-md);
+  }
+
+  /* Better button sizing */
+  button {
+    min-height: 48px;
+    padding: var(--spacing-sm) var(--spacing-md);
   }
 }
