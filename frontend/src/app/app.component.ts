@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   title = 'SkinGlow'
   user$: Observable<User | null>
   showDailyCheckin$: Observable<boolean>
+  showNavbar$: Observable<boolean>
 
   constructor(
     private supabaseService: SupabaseService,
@@ -52,6 +53,9 @@ export class AppComponent implements OnInit {
     this.showDailyCheckin$ = combineLatest([this.user$, routeCheck$]).pipe(
       map(([user, shouldShow]) => !!user && shouldShow)
     )
+
+    // Hide navbar on auth pages (login/signup)
+    this.showNavbar$ = routeCheck$
   }
 
   ngOnInit() {

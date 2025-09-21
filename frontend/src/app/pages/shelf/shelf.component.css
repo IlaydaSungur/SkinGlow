@@ -54,7 +54,7 @@
 }
 
 .add-button {
-  background-color: var(--primary-color);
+  background-color: rgb(75, 190, 236);
   color: white;
   width: 56px;
   height: 56px;
@@ -177,7 +177,7 @@
   right: 0;
   bottom: 0;
   padding: var(--spacing-sm) var(--spacing-md);
-  background: rgba(30, 58, 138, 0.8);
+  background: rgb(75, 190, 236);
   color: white;
   text-align: center;
   backdrop-filter: blur(4px);

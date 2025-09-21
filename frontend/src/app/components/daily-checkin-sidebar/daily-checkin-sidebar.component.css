@@ -1,37 +1,42 @@
 /* Sidebar Toggle Button */
 .sidebar-toggle-btn {
   position: fixed;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-  width: 80px;
-  height: 40px;
-  background: #667eea;
+  bottom: 300px;
+  left: 70%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 50px;
+  background: rgb(75, 190, 236);
   border: none;
-  border-radius: 20px;
+  border-radius: 25px;
   color: white;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(75, 190, 236, 0.3);
   transition: all 0.3s ease;
-  z-index: 1000;
+  z-index: 10000;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
 }
 
+/* Button slides left with character when sidebar is open */
+body.sidebar-open .sidebar-toggle-btn {
+  left: 45% !important; /* Move button to match character position */
+}
+
+/* Message bubble tail - removed */
+
 .sidebar-toggle-btn:hover {
-  transform: translateY(-50%) scale(1.05);
-  background: #5a67d8;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  transform: translateX(-50%) scale(1.05);
+  background: rgba(75, 190, 236, 0.9);
+  box-shadow: 0 6px 16px rgba(75, 190, 236, 0.4);
 }
 
 .sidebar-toggle-btn.active {
-  background: #5a67d8;
-  right: 370px;
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  background: rgba(75, 190, 236, 0.9);
+  box-shadow: 0 6px 16px rgba(75, 190, 236, 0.4);
 }
 
 /* Sidebar Overlay */
@@ -74,7 +79,7 @@
 
 /* Sidebar Header */
 .sidebar-header {
-  background: #667eea;
+  background: rgb(75, 190, 236);
   color: white;
   padding: 16px 20px;
   position: relative;
@@ -215,7 +220,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgb(75, 190, 236);
   cursor: pointer;
   border: 2px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -225,7 +230,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgb(75, 190, 236);
   cursor: pointer;
   border: 2px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -308,7 +313,7 @@
 .submit-btn {
   width: 100%;
   padding: 10px 20px;
-  background: #667eea;
+  background: rgb(75, 190, 236);
   color: white;
   border: 1px solid #000000;
   border-radius: 6px;
@@ -319,7 +324,7 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: #5a67d8;
+  background: rgba(75, 190, 236, 0.9);
 }
 
 .submit-btn:disabled {
@@ -365,12 +370,14 @@
   }
 
   .sidebar-toggle-btn {
-    width: 70px;
-    font-size: 11px;
+    width: 180px;
+    font-size: 12px;
+    bottom: 120px;
   }
 
-  .sidebar-toggle-btn.active {
-    right: 20px;
+  /* Button slides with character on tablets when sidebar is open */
+  body.sidebar-open .sidebar-toggle-btn {
+    left: 50% !important; /* Match character position on tablets */
   }
 
   .sidebar-content {
@@ -379,6 +386,19 @@
 
   .category-section h3 {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-toggle-btn {
+    width: 160px;
+    font-size: 11px;
+    bottom: 100px;
+  }
+
+  /* Button slides with character on mobile when sidebar is open */
+  body.sidebar-open .sidebar-toggle-btn {
+    left: 60% !important; /* Match character position on mobile */
   }
 }
 

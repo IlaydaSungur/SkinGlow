@@ -220,6 +220,15 @@ body {
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.1);
 }
 
+/* Character sliding animation when sidebar is open */
+body.sidebar-open .character-container {
+  left: 45% !important;
+}
+
+body.sidebar-open .sidebar-toggle-btn {
+  left: 45% !important;
+}
+
 /* Responsive breakpoints */
 @media (max-width: 768px) {
   .container {
@@ -229,5 +238,25 @@ body {
   .btn {
     padding: var(--spacing-sm);
     font-size: var(--font-size-sm);
+  }
+
+  /* Character slides less on tablets when sidebar is open */
+  body.sidebar-open .character-container {
+    left: 50% !important;
+  }
+
+  body.sidebar-open .sidebar-toggle-btn {
+    left: 50% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Character slides moderately on mobile when sidebar is open */
+  body.sidebar-open .character-container {
+    left: 60% !important;
+  }
+
+  body.sidebar-open .sidebar-toggle-btn {
+    left: 60% !important;
   }
 }
