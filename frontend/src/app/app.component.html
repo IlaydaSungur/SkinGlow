@@ -1,4 +1,5 @@
-<nav class="navbar">
+<!-- Hide navbar on login/signup pages -->
+<nav *ngIf="showNavbar$ | async" class="navbar">
   <div class="nav-container">
     <div class="nav-brand">SkinGlow</div>
     <div class="nav-links">
@@ -18,7 +19,7 @@
           routerLinkActive="active"
           class="user-icon"
           title="Profile"
-          >👤</a
+          >🐥</a
         >
         <button (click)="logout()" class="logout-btn" title="Logout">
           Logout

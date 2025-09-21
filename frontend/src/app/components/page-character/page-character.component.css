@@ -5,7 +5,10 @@
   transform: translateX(-50%);
   z-index: 9999;
   pointer-events: none; /* Allow clicks to pass through */
+  transition: left 0.3s ease; /* Smooth animation for sliding */
 }
+
+/* Character slides left when sidebar is open - handled in global styles */
 
 .character-image {
   max-width: 600px;
@@ -32,6 +35,11 @@
   .character-container {
     bottom: 0px;
   }
+
+  /* Character slides less on mobile when sidebar is open */
+  body.sidebar-open .character-container {
+    left: 50% !important; /* Less dramatic slide on tablets */
+  }
 }
 
 @media (max-width: 480px) {
@@ -42,5 +50,10 @@
 
   .character-container {
     bottom: 0px;
+  }
+
+  /* Character slides moderately on mobile when sidebar is open */
+  body.sidebar-open .character-container {
+    left: 60% !important; /* Even less dramatic slide on mobile */
   }
 }

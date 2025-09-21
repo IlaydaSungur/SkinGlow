@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core'
-import { CommonModule } from '@angular/common'
+import { Component, OnInit, Inject, Renderer2 } from '@angular/core'
+import { CommonModule, DOCUMENT } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { SupabaseService } from '../../core/supabase.service'
 import {
@@ -189,7 +189,11 @@ export class DailyCheckinSidebarComponent implements OnInit {
     },
   ]
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2
+  ) {}
 
   async ngOnInit() {
     // Only check today's checkin if user is authenticated
@@ -200,26 +204,47 @@ export class DailyCheckinSidebarComponent implements OnInit {
 
   toggleSidebar() {
     this.isOpen = !this.isOpen
+
+    // Add/remove global class to body for character animation
+    if (this.isOpen) {
+      this.renderer.addClass(this.document.body, 'sidebar-open')
+    } else {
+      this.renderer.removeClass(this.document.body, 'sidebar-open')
+    }
   }
 
   async checkTodaysCheckin() {
     try {
+      // First, check if user exists
+      if (!this.supabaseService.user?.id) {
+        this.hasCheckinToday = false
+        this.initializeCheckinData()
+        return
+      }
+
       const { data, error } = await this.supabaseService.supabase
         .from('daily_checkins')
         .select('*')
-        .eq('user_id', this.supabaseService.user?.id)
+        .eq('user_id', this.supabaseService.user.id)
         .eq('checkin_date', this.currentDate)
-        .single()
+        .maybeSingle() // Use maybeSingle() instead of single() to avoid errors when no record exists
 
       if (data && !error) {
         this.hasCheckinToday = true
         this.checkinData = data
+      } else if (error && error.code !== 'PGRST116') {
+        // PGRST116 is "no rows returned" - this is expected when no checkin exists
+        console.error("Error checking today's check-in:", error)
+        this.hasCheckinToday = false
+        this.initializeCheckinData()
       } else {
+        // No checkin found for today - this is normal
         this.hasCheckinToday = false
         this.initializeCheckinData()
       }
     } catch (error) {
       console.error("Error checking today's check-in:", error)
+      this.hasCheckinToday = false
       this.initializeCheckinData()
     }
   }
@@ -273,6 +298,7 @@ export class DailyCheckinSidebarComponent implements OnInit {
         } successfully!`
       )
       this.isOpen = false
+      this.renderer.removeClass(this.document.body, 'sidebar-open')
     } catch (error) {
       console.error('Error submitting check-in:', error)
       alert('Error submitting check-in. Please try again.')

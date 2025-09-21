@@ -1,12 +1,12 @@
-<!-- Sidebar Toggle Button -->
+<!-- Sidebar Toggle Button - Only show if user hasn't checked in today -->
 <button
+  *ngIf="!hasCheckinToday"
   class="sidebar-toggle-btn"
   (click)="toggleSidebar()"
   [class.active]="isOpen"
   title="Daily Check-in"
 >
-  <span>✓</span>
-  <span>Check-in</span>
+  Hello! Do you wanna check in?
 </button>
 
 <!-- Sidebar Overlay -->
