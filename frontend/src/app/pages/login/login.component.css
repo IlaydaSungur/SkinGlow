@@ -88,6 +88,50 @@
   margin-top: 50vh; /* Position after scroll message */
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .login-container {
+    padding: var(--spacing-md);
+    min-height: 80vh;
+    margin-top: 40vh;
+  }
+
+  .scroll-msg > div:nth-child(1) {
+    font-size: 2em;
+  }
+
+  .scroll-msg > div:nth-child(2) {
+    font-size: 1em;
+    padding: 0 var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: var(--spacing-sm);
+    margin-top: 30vh;
+  }
+
+  .login-card {
+    padding: var(--spacing-lg);
+    max-width: 100%;
+    width: calc(100% - 2 * var(--spacing-sm));
+  }
+
+  .login-header h1 {
+    font-size: var(--font-size-xl);
+  }
+
+  .scroll-msg > div:nth-child(1) {
+    font-size: 1.8em;
+    margin-top: -5vh;
+  }
+
+  .scroll-msg > div:nth-child(2) {
+    font-size: 0.9em;
+  }
+}
+
 .login-card {
   background: var(--background-color);
   backdrop-filter: blur(10px);

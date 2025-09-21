@@ -34,26 +34,55 @@
 
   .character-container {
     bottom: 0px;
+    left: 75%;
   }
 
   /* Character slides less on mobile when sidebar is open */
   body.sidebar-open .character-container {
-    left: 50% !important; /* Less dramatic slide on tablets */
+    left: 45% !important; /* Less dramatic slide on tablets */
   }
 }
 
 @media (max-width: 480px) {
   .character-image {
-    max-width: 120px;
-    max-height: 120px;
+    max-width: 110px;
+    max-height: 110px;
   }
 
   .character-container {
     bottom: 0px;
+    left: 70%;
   }
 
   /* Character slides moderately on mobile when sidebar is open */
   body.sidebar-open .character-container {
-    left: 60% !important; /* Even less dramatic slide on mobile */
+    left: 50% !important; /* Even less dramatic slide on mobile */
+  }
+
+  /* Reduce hover effect on mobile */
+  .character-image:hover {
+    transform: scale(1.02);
+  }
+}
+
+@media (max-width: 360px) {
+  .character-image {
+    max-width: 90px;
+    max-height: 90px;
+  }
+
+  .character-container {
+    bottom: 0px;
+    left: 65%;
+  }
+
+  /* Character slides less on very small screens */
+  body.sidebar-open .character-container {
+    left: 45% !important;
+  }
+
+  /* Minimal hover effect on very small screens */
+  .character-image:hover {
+    transform: scale(1.01);
   }
 }

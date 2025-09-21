@@ -268,3 +268,125 @@
   border-color: #000000;
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .shelf-container {
+    padding: var(--spacing-md);
+  }
+
+  .shelf-title {
+    font-size: var(--font-size-xl);
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) 0;
+  }
+
+  .product-card {
+    padding: var(--spacing-md);
+  }
+
+  .image-wrap {
+    height: 180px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: var(--spacing-lg);
+  }
+
+  .filter-bar {
+    margin: var(--spacing-sm) 0;
+  }
+
+  .filter-bar label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    margin-right: 0;
+    text-align: center;
+  }
+
+  .styled-select {
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+@media (max-width: 480px) {
+  .shelf-container {
+    padding: var(--spacing-sm);
+  }
+
+  .shelf-title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--spacing-sm);
+  }
+
+  .product-card {
+    padding: var(--spacing-sm);
+  }
+
+  .product-card h3 {
+    font-size: var(--font-size-base);
+  }
+
+  .product-card p {
+    font-size: var(--font-size-xs);
+  }
+
+  .image-wrap {
+    height: 140px;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .overlay-title {
+    font-size: var(--font-size-sm);
+  }
+
+  .overlay-brand {
+    font-size: var(--font-size-xs);
+  }
+
+  .card-buttons {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .card-buttons button {
+    width: 100%;
+    padding: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+  }
+
+  .add-button {
+    width: 48px;
+    height: 48px;
+    font-size: var(--font-size-xl);
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: var(--spacing-md);
+  }
+
+  .modal-content input,
+  .modal-content select {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+
+  .ingredients-list {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+}
