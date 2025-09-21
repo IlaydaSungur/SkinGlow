@@ -11,11 +11,12 @@ import { FormsModule } from '@angular/forms'
 import { Router, RouterModule } from '@angular/router'
 import { SupabaseService } from '../../core/supabase.service'
 import { GooeyOverlayService } from '../../services/gooey-overlay.service'
+import { PageCharacterComponent } from '../../components/page-character/page-character.component'
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, PageCharacterComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -52,7 +53,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
       if (success) {
         // Customize colors for SkinGlow theme
         this.gooeyOverlayService.updateParams({
-          color: [0.058, 0.639, 0.572], // #0fa392 converted to RGB 0-1 range
+          color: [0.294, 0.745, 0.925], //rgb(75, 190, 236) converted to RGB 0-1 range
           speed: 0.15,
           scale: 0.2,
         })

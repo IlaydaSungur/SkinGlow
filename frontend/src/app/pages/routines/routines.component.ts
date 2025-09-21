@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common'
 import { RouterModule } from '@angular/router'
 import { HttpClient } from '@angular/common/http'
 import { SupabaseService } from 'src/app/core/supabase.service'
+import { PageCharacterComponent } from '../../components/page-character/page-character.component'
 
 interface RoutineStep {
   step: number
@@ -26,7 +27,7 @@ interface GeneratedRoutine {
 @Component({
   selector: 'app-routines',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, PageCharacterComponent],
   templateUrl: './routines.component.html',
   styleUrl: './routines.component.css',
 })

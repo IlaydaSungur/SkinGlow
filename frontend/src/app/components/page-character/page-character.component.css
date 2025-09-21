@@ -1,0 +1,46 @@
+.character-container {
+  position: fixed;
+  bottom: 0px;
+  left: 80%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+.character-image {
+  max-width: 600px;
+  max-height: 600px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.character-image:hover {
+  transform: scale(1.05);
+  pointer-events: auto; /* Re-enable pointer events on hover for interaction */
+}
+
+/* Responsive sizing */
+@media (max-width: 768px) {
+  .character-image {
+    max-width: 150px;
+    max-height: 150px;
+  }
+
+  .character-container {
+    bottom: 0px;
+  }
+}
+
+@media (max-width: 480px) {
+  .character-image {
+    max-width: 120px;
+    max-height: 120px;
+  }
+
+  .character-container {
+    bottom: 0px;
+  }
+}
