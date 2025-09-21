@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { SupabaseService } from 'src/app/core/supabase.service'
-import { PageCharacterComponent } from '../../components/page-character/page-character.component'
 
 interface SkincareProduct {
   id?: string // 🔥 burada id eklendi
@@ -16,7 +15,7 @@ interface SkincareProduct {
 @Component({
   selector: 'app-shelf',
   standalone: true,
-  imports: [CommonModule, FormsModule, PageCharacterComponent], // 🔥 ngIf, ngFor, ngModel için
+  imports: [CommonModule, FormsModule], // 🔥 ngIf, ngFor, ngModel için
   templateUrl: './shelf.component.html',
   styleUrls: ['./shelf.component.css'],
 })

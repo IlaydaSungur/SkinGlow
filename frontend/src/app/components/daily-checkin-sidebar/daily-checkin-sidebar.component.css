@@ -1,42 +1,30 @@
 /* Sidebar Toggle Button */
 .sidebar-toggle-btn {
   position: fixed;
-  bottom: 300px;
-  left: 70%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 50px;
-  background: rgb(75, 190, 236);
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: #667eea;
   border: none;
-  border-radius: 25px;
+  border-radius: 12px;
   color: white;
-  font-size: 14px;
-  font-weight: 500;
+  font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(75, 190, 236, 0.3);
-  transition: all 0.3s ease;
-  z-index: 10000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+  z-index: 1000;
 }
-
-/* Button slides left with character when sidebar is open */
-body.sidebar-open .sidebar-toggle-btn {
-  left: 45% !important; /* Move button to match character position */
-}
-
-/* Message bubble tail - removed */
 
 .sidebar-toggle-btn:hover {
-  transform: translateX(-50%) scale(1.05);
-  background: rgba(75, 190, 236, 0.9);
-  box-shadow: 0 6px 16px rgba(75, 190, 236, 0.4);
+  transform: translateY(-50%) scale(1.05);
+  background: #5a67d8;
 }
 
 .sidebar-toggle-btn.active {
-  background: rgba(75, 190, 236, 0.9);
-  box-shadow: 0 6px 16px rgba(75, 190, 236, 0.4);
+  background: #5a67d8;
+  right: 350px;
 }
 
 /* Sidebar Overlay */
@@ -79,7 +67,7 @@ body.sidebar-open .sidebar-toggle-btn {
 
 /* Sidebar Header */
 .sidebar-header {
-  background: rgb(75, 190, 236);
+  background: #667eea;
   color: white;
   padding: 16px 20px;
   position: relative;
@@ -102,7 +90,7 @@ body.sidebar-open .sidebar-toggle-btn {
   top: 15px;
   right: 15px;
   background: none;
-  border: 1px solid #000000;
+  border: none;
   color: white;
   font-size: 28px;
   cursor: pointer;
@@ -143,13 +131,13 @@ body.sidebar-open .sidebar-toggle-btn {
 
 .status-badge.completed {
   background: #dcfce7;
-  color: #000000;
+  color: #16a34a;
 }
 
 .status-note {
   margin: 8px 0 0 0;
   font-size: 12px;
-  color: #000000;
+  color: #6b7280;
 }
 
 /* Category Sections */
@@ -161,8 +149,8 @@ body.sidebar-open .sidebar-toggle-btn {
   margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 500;
-  color: #000000;
-  border-bottom: 1px solid #000000;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
   padding-bottom: 6px;
 }
 
@@ -187,13 +175,13 @@ body.sidebar-open .sidebar-toggle-btn {
 
 .label-text {
   font-weight: 500;
-  color: #000000;
+  color: #374151;
   font-size: 13px;
 }
 
 .label-description {
   font-size: 11px;
-  color: #000000;
+  color: #6b7280;
 }
 
 /* Rating Container */
@@ -210,7 +198,6 @@ body.sidebar-open .sidebar-toggle-btn {
   background: #e5e7eb;
   outline: none;
   -webkit-appearance: none;
-  appearance: none;
   cursor: pointer;
 }
 
@@ -220,7 +207,7 @@ body.sidebar-open .sidebar-toggle-btn {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgb(75, 190, 236);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   cursor: pointer;
   border: 2px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -230,12 +217,12 @@ body.sidebar-open .sidebar-toggle-btn {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgb(75, 190, 236);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   cursor: pointer;
   border: 2px solid white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-  -webkit-appearance: none;
   appearance: none;
+  -webkit-appearance: none;
 }
 
 .rating-display {
@@ -246,13 +233,13 @@ body.sidebar-open .sidebar-toggle-btn {
 
 .rating-value {
   font-weight: 600;
-  color: #000000;
+  color: #374151;
   font-size: 14px;
 }
 
 .rating-label-text {
   font-size: 12px;
-  color: #000000;
+  color: #6b7280;
   font-style: italic;
 }
 
@@ -265,57 +252,57 @@ body.sidebar-open .sidebar-toggle-btn {
 .select-input {
   width: 100%;
   padding: 8px 12px;
-  border: 1px solid #000000;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   background: white;
   font-size: 14px;
-  color: #000000;
+  color: #374151;
   cursor: pointer;
   transition: border-color 0.2s ease;
 }
 
 .select-input:focus {
   outline: none;
-  border-color: #000000;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 /* Notes Section */
 .notes-textarea {
   width: 100%;
   padding: 12px;
-  border: 1px solid #000000;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   resize: vertical;
   font-family: inherit;
   font-size: 14px;
-  color: #000000;
+  color: #374151;
   transition: border-color 0.2s ease;
 }
 
 .notes-textarea:focus {
   outline: none;
-  border-color: #000000;
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .notes-textarea::placeholder {
-  color: #000000;
+  color: #9ca3af;
 }
 
 /* Submit Section */
 .submit-section {
   margin-top: 24px;
   padding-top: 16px;
-  border-top: 1px solid #000000;
+  border-top: 1px solid #e5e7eb;
 }
 
 .submit-btn {
   width: 100%;
   padding: 10px 20px;
-  background: rgb(75, 190, 236);
+  background: #667eea;
   color: white;
-  border: 1px solid #000000;
+  border: none;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
@@ -324,7 +311,7 @@ body.sidebar-open .sidebar-toggle-btn {
 }
 
 .submit-btn:hover:not(:disabled) {
-  background: rgba(75, 190, 236, 0.9);
+  background: #5a67d8;
 }
 
 .submit-btn:disabled {
@@ -369,15 +356,8 @@ body.sidebar-open .sidebar-toggle-btn {
     right: -100%;
   }
 
-  .sidebar-toggle-btn {
-    width: 180px;
-    font-size: 12px;
-    bottom: 120px;
-  }
-
-  /* Button slides with character on tablets when sidebar is open */
-  body.sidebar-open .sidebar-toggle-btn {
-    left: 50% !important; /* Match character position on tablets */
+  .sidebar-toggle-btn.active {
+    right: 20px;
   }
 
   .sidebar-content {
@@ -386,19 +366,6 @@ body.sidebar-open .sidebar-toggle-btn {
 
   .category-section h3 {
     font-size: 16px;
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar-toggle-btn {
-    width: 160px;
-    font-size: 11px;
-    bottom: 100px;
-  }
-
-  /* Button slides with character on mobile when sidebar is open */
-  body.sidebar-open .sidebar-toggle-btn {
-    left: 60% !important; /* Match character position on mobile */
   }
 }
 
@@ -418,102 +385,4 @@ body.sidebar-open .sidebar-toggle-btn {
 
 .sidebar::-webkit-scrollbar-thumb:hover {
   background: #a8a8a8;
-}
-
-/* Additional Mobile responsiveness improvements */
-@media (max-width: 768px) {
-  .sidebar-toggle-btn {
-    width: 160px;
-    height: 45px;
-    font-size: 13px;
-    bottom: 200px;
-  }
-
-  .sidebar {
-    width: 100%;
-    border-radius: 20px 20px 0 0;
-  }
-
-  .sidebar-header h2 {
-    font-size: var(--font-size-lg);
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-  }
-
-  .form-group {
-    width: 100%;
-  }
-
-  .btn-primary {
-    width: 100%;
-    margin-top: var(--spacing-sm);
-  }
-}
-
-@media (max-width: 480px) {
-  .sidebar-toggle-btn {
-    width: 140px;
-    height: 40px;
-    font-size: 12px;
-    border-radius: 20px;
-    bottom: 150px;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: 85vh;
-    border-radius: 15px 15px 0 0;
-  }
-
-  .sidebar-header {
-    padding: var(--spacing-md);
-  }
-
-  .sidebar-content {
-    padding: var(--spacing-sm) var(--spacing-md);
-  }
-
-  .sidebar-header h2 {
-    font-size: var(--font-size-base);
-  }
-
-  .close-btn {
-    width: 32px;
-    height: 32px;
-    font-size: var(--font-size-lg);
-  }
-
-  .form-group label {
-    font-size: var(--font-size-sm);
-  }
-
-  .form-control {
-    padding: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-  }
-
-  .btn-primary {
-    padding: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-  }
-
-  .history-item {
-    padding: var(--spacing-sm);
-  }
-
-  .history-date {
-    font-size: var(--font-size-xs);
-  }
-
-  .history-details {
-    font-size: var(--font-size-xs);
-  }
-
-  /* Ensure sidebar doesn't cause horizontal scroll when closed */
-  .sidebar:not(.open) {
-    transform: translateX(100%);
-  }
 }

@@ -4,12 +4,11 @@ import { HttpClient } from '@angular/common/http'
 import * as Tesseract from 'tesseract.js'
 import { SupabaseService } from 'src/app/core/supabase.service'
 import { FormsModule } from '@angular/forms' // ✅ EKLE
-import { PageCharacterComponent } from '../../components/page-character/page-character.component'
 
 @Component({
   selector: 'app-analyse',
   standalone: true,
-  imports: [CommonModule, FormsModule, PageCharacterComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './analyse.component.html',
   styleUrls: ['./analyse.component.css'],
 })
@@ -32,8 +31,9 @@ export class AnalyseComponent {
   shelfFormData = {
     name: '',
     type: '',
-    brand: '',
+    brand: '' 
   }
+  
 
   constructor(
     private http: HttpClient,
@@ -48,30 +48,28 @@ export class AnalyseComponent {
     this.shelfFormData = { name: '', type: '', brand: '' } // ✅ brand eklendi
     this.showShelfModal = true
   }
-
+  
   submitShelfForm() {
     const userId = this.supabaseService.user?.id
     if (!userId) return alert('User not found')
 
-    const product = {
-      name: this.shelfFormData.name,
-      brand: this.shelfFormData.brand, // ✅ eklendi
-      type: this.shelfFormData.type,
-      ingredients: this.ingredients.map((i) => i.name),
-    }
+      const product = {
+        name: this.shelfFormData.name,
+        brand: this.shelfFormData.brand, // ✅ eklendi
+        type: this.shelfFormData.type,
+        ingredients: this.ingredients.map(i => i.name)
+      }
+      
 
     this.http.post(`http://localhost:3000/shelf/${userId}`, product).subscribe({
       next: () => {
         this.showShelfModal = false
         alert('Product added to shelf!')
       },
-      error: (err) => {
+      error: err => {
         console.error('❌ ERROR:', err)
-        alert(
-          'Failed to add product:\n' +
-            (err?.error?.error || err?.message || 'Unknown error')
-        )
-      },
+        alert('Failed to add product:\n' + (err?.error?.error || err?.message || 'Unknown error'))
+      }
     })
   }
 
@@ -102,9 +100,7 @@ export class AnalyseComponent {
               } else if (data.raw) {
                 this.raw = data.raw
                 try {
-                  const match = data.raw.match(
-                    /"ingredients"\s*:\s*\[[\s\S]*?\]/
-                  )
+                  const match = data.raw.match(/"ingredients"\s*:\s*\[[\s\S]*?\]/)
                   if (match) {
                     const jsonText = `{${match[0]}}`
                     const parsed = JSON.parse(jsonText)
@@ -133,17 +129,17 @@ export class AnalyseComponent {
   }
 
   analyseWithShelf() {
-    if (this.ingredients.length === 0) return
-
-    const userId = this.supabaseService.user?.id
+    if (this.ingredients.length === 0) return;
+  
+    const userId = this.supabaseService.user?.id;
     if (!userId) {
-      this.error = 'User not logged in'
-      return
+      this.error = 'User not logged in';
+      return;
     }
-
-    this.isComparing = true
-    this.error = null
-
+  
+    this.isComparing = true;
+    this.error = null;
+  
     this.http
       .post<any>('http://localhost:3000/compare', {
         userId,
@@ -151,9 +147,9 @@ export class AnalyseComponent {
       })
       .subscribe({
         next: (res) => {
-          this.isComparing = false
-          this.analysis = []
-
+          this.isComparing = false;
+          this.analysis = [];
+  
           if (res.productSimilarities && res.productSimilarities.length > 0) {
             res.productSimilarities.forEach((p: any) => {
               this.analysis.push({
@@ -161,30 +157,30 @@ export class AnalyseComponent {
                 name: `📊 ${p.productName}`,
                 description: `Overall similarity: ${p.similarity}`,
                 effect: 'neutral',
-              })
-
+              });
+  
               if (p.safetyMessage.includes('not advised')) {
                 this.analysis.push({
                   type: 'safety',
                   name: `⚠️ Safety Check`,
                   description: p.safetyMessage,
                   effect: 'harmful',
-                })
+                });
               } else {
                 this.analysis.push({
                   type: 'safety',
                   name: `✅ Safe to Use`,
                   description: '',
                   effect: 'beneficial',
-                })
+                });
               }
-            })
+            });
           }
         },
         error: () => {
-          this.isComparing = false
-          this.error = 'Comparison failed.'
+          this.isComparing = false;
+          this.error = 'Comparison failed.';
         },
-      })
+      });
   }
 }

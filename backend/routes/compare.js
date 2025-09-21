@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
       .eq('user_id', userId);
 
     if (error) {
-      console.error('Supabase error:', error);
+      console.error('❌ Supabase error:', error);
       return res
         .status(500)
         .json({ error: 'Failed to fetch shelf', details: error.message });
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
 
       if (shelfIngredients.length === 0) continue;
 
-      //  Compute embeddings for all ingredients together
+      // 🧮 Compute embeddings for all ingredients together
       const allTexts = [...ingredients, ...shelfIngredients];
       let embeddings = [];
       try {
@@ -118,7 +118,7 @@ router.post('/', async (req, res) => {
 
       productSimilarities.push({
         productName: row.name,
-        similarity: (maxSim * 100).toFixed(1) + '%', 
+        similarity: (maxSim * 100).toFixed(1) + '%', // ✅ now a percentage, not "N/A"
         safetyMessage,
       });
     }

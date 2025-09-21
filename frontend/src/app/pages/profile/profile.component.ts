@@ -15,17 +15,11 @@ import {
   ProfileUpdateRequest,
   ProfileResponse,
 } from '../../core/interfaces/profile.interface'
-import { PageCharacterComponent } from '../../components/page-character/page-character.component'
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    PageCharacterComponent,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
 })

@@ -29,7 +29,7 @@ input[type='file'] {
 }
 
 .custom-file-upload {
-  background-color: rgb(75, 190, 236);
+  background-color: var(--secondary-color);
   color: white;
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius-md);
@@ -39,18 +39,18 @@ input[type='file'] {
   height: 42px;
   display: inline-flex;
   align-items: center;
-  border: 1px solid #000000;
+  border: none;
 }
 
 .custom-file-upload:hover {
-  background-color: rgba(75, 190, 236, 0.9);
+  background-color: var(--secondary-dark);
 }
 
 .analyse-btn,
 .shelf-btn {
-  background-color: rgb(75, 190, 236);
+  background-color: var(--primary-color);
   color: white;
-  border: 1px solid #000000;
+  border: none;
   padding: var(--spacing-sm) var(--spacing-lg);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -60,17 +60,17 @@ input[type='file'] {
 }
 
 .shelf-btn {
-  background-color: rgb(75, 190, 236);
+  background-color: var(--primary-color);
   margin-bottom: var(--spacing-lg);
 }
 
 .analyse-btn:hover {
-  background-color: rgba(75, 190, 236, 0.9);
+  background-color: var(--primary-light);
   transform: translateY(-2px);
 }
 
 .shelf-btn:hover {
-  background-color: rgba(75, 190, 236, 0.9);
+  background-color: var(--primary-light);
   transform: translateY(-2px);
 }
 
@@ -191,6 +191,7 @@ input[type='file'] {
   font-style: italic;
 }
 
+
 .modal {
   position: fixed;
   top: 0;
@@ -219,8 +220,9 @@ input[type='file'] {
   padding: 0.6rem;
   margin: 0.5rem 0;
   border-radius: 5px;
-  border: 1px solid #000000;
+  border: 1px solid #ccc;
 }
+
 
 .safety.safe {
   border-left: 4px solid var(--success-color);
@@ -232,92 +234,4 @@ input[type='file'] {
   border-left: 4px solid var(--error-color);
   background: var(--error-light);
   color: var(--error-color);
-}
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .page-container {
-    padding: var(--spacing-md);
-    min-height: 70vh;
-  }
-
-  h1 {
-    font-size: var(--font-size-2xl);
-  }
-
-  .upload-section {
-    flex-direction: column;
-    gap: var(--spacing-sm);
-    width: 100%;
-  }
-
-  .custom-file-upload,
-  .analyse-btn,
-  .shelf-btn {
-    width: 100%;
-    max-width: 300px;
-    margin: 0 auto;
-  }
-
-  .results-card {
-    max-width: 100%;
-    padding: var(--spacing-md);
-  }
-
-  .modal-content {
-    width: 95%;
-    padding: var(--spacing-lg);
-  }
-}
-
-@media (max-width: 480px) {
-  .page-container {
-    padding: var(--spacing-sm);
-  }
-
-  h1 {
-    font-size: var(--font-size-xl);
-    margin-bottom: var(--spacing-md);
-  }
-
-  .upload-section {
-    gap: var(--spacing-xs);
-  }
-
-  .custom-file-upload,
-  .analyse-btn,
-  .shelf-btn {
-    padding: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-    height: auto;
-    min-height: 42px;
-  }
-
-  .results-card {
-    padding: var(--spacing-sm);
-    margin-top: var(--spacing-sm);
-  }
-
-  .results-card h3 {
-    font-size: var(--font-size-lg);
-  }
-
-  .analysis-card {
-    padding: var(--spacing-sm);
-  }
-
-  .analysis-card h4 {
-    font-size: var(--font-size-base);
-  }
-
-  .modal-content {
-    width: 90%;
-    padding: var(--spacing-md);
-  }
-
-  .modal-content input,
-  .modal-content select {
-    padding: var(--spacing-sm);
-    font-size: var(--font-size-sm);
-  }
 }

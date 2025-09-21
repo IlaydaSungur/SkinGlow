@@ -1,5 +1,4 @@
-<!-- Hide navbar on login/signup pages -->
-<nav *ngIf="showNavbar$ | async" class="navbar">
+<nav class="navbar">
   <div class="nav-container">
     <div class="nav-brand">SkinGlow</div>
     <div class="nav-links">
@@ -19,7 +18,7 @@
           routerLinkActive="active"
           class="user-icon"
           title="Profile"
-          >🐥</a
+          >👤</a
         >
         <button (click)="logout()" class="logout-btn" title="Logout">
           Logout
@@ -36,7 +35,7 @@
 
 <router-outlet></router-outlet>
 
-<!-- Daily Check-in Sidebar - Only show when user is authenticated and not on auth pages -->
-<ng-container *ngIf="showDailyCheckin$ | async">
+<!-- Daily Check-in Sidebar - Only show when user is authenticated -->
+<ng-container *ngIf="user$ | async">
   <app-daily-checkin-sidebar></app-daily-checkin-sidebar>
 </ng-container>
