@@ -35,7 +35,7 @@
 
 <router-outlet></router-outlet>
 
-<!-- Daily Check-in Sidebar - Only show when user is authenticated -->
-<ng-container *ngIf="user$ | async">
+<!-- Daily Check-in Sidebar - Only show when user is authenticated and not on auth pages -->
+<ng-container *ngIf="showDailyCheckin$ | async">
   <app-daily-checkin-sidebar></app-daily-checkin-sidebar>
 </ng-container>
