@@ -54,10 +54,8 @@ export class SignupComponent {
         this.errorMessage = error.message || 'Signup failed'
       } else if (user) {
         if (user.email_confirmed_at) {
-          // Email is already confirmed, redirect to app
           this.router.navigate(['/shelf'])
         } else {
-          // Email confirmation required
           this.successMessage =
             'Please check your email and click the confirmation link to complete your signup.'
         }

@@ -2,7 +2,6 @@ const { HfInference } = require('@huggingface/inference')
 
 const hf = new HfInference(process.env.HF_API_KEY)
 
-// ✅ Tek seferde embedding al (batch)
 async function getEmbeddingsBatch(texts) {
   try {
     const res = await hf.featureExtraction({
@@ -16,7 +15,6 @@ async function getEmbeddingsBatch(texts) {
   }
 }
 
-// ✅ Cosine similarity hesapla
 function cosineSimilarity(vecA, vecB) {
   const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0)
   const magA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0))

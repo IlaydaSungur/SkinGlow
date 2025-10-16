@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
       .eq('user_id', userId);
 
     if (error) {
-      console.error('❌ Supabase error:', error);
+      console.error('Supabase error:', error);
       return res
         .status(500)
         .json({ error: 'Failed to fetch shelf', details: error.message });
@@ -74,7 +74,6 @@ router.post('/', async (req, res) => {
         }
       }
 
-      // 🧠 Groq safety check
       const prompt = `
         Task: You will be given the ingredients of two products. Determine if they are safe to use together.
         - If safe: "It is okay to use."
@@ -118,14 +117,14 @@ router.post('/', async (req, res) => {
 
       productSimilarities.push({
         productName: row.name,
-        similarity: (maxSim * 100).toFixed(1) + '%', // ✅ now a percentage, not "N/A"
+        similarity: (maxSim * 100).toFixed(1) + '%', 
         safetyMessage,
       });
     }
 
     res.json({ productSimilarities });
   } catch (err) {
-    console.error('❌ Compare error:', err);
+    console.error('Compare error:', err);
     res.status(500).json({ error: 'Comparison failed', details: err.message });
   }
 });

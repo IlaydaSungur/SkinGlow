@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { SupabaseService } from 'src/app/core/supabase.service'
 
 interface SkincareProduct {
-  id?: string // 🔥 burada id eklendi
+  id?: string 
   name: string
   brand: string
   ingredients: string[]
@@ -15,7 +15,7 @@ interface SkincareProduct {
 @Component({
   selector: 'app-shelf',
   standalone: true,
-  imports: [CommonModule, FormsModule], // 🔥 ngIf, ngFor, ngModel için
+  imports: [CommonModule, FormsModule], 
   templateUrl: './shelf.component.html',
   styleUrls: ['./shelf.component.css'],
 })

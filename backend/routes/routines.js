@@ -4,7 +4,6 @@ const { supabase } = require('../services/supabaseClient')
 
 const router = express.Router()
 
-// Generate AI-powered skincare routine
 router.post('/generate', async (req, res) => {
   try {
     const { userId, routineType } = req.body
@@ -42,7 +41,6 @@ router.post('/generate', async (req, res) => {
       })
     }
 
-    // Prepare products data for AI
     const productsInfo = shelfData.map((product) => ({
       name: product.name,
       brand: product.brand,
@@ -52,7 +50,6 @@ router.post('/generate', async (req, res) => {
         : product.ingredients,
     }))
 
-    // Create AI prompt for routine generation
     const prompt = `
 Görev: Kullanıcının sahip olduğu ürünlere göre ${
       routineType === 'morning' ? 'sabah' : 'gece'
@@ -101,7 +98,6 @@ Kurallar:
 - Cilt tipine uygun öneriler ver
 `
 
-    // Call Groq API
     const response = await axios.post(
       'https://api.groq.com/openai/v1/chat/completions',
       {
@@ -124,17 +120,14 @@ Kurallar:
       .trim()
 
     try {
-      // Extract JSON from response
       const jsonMatch = raw.match(/\{[\s\S]*\}/)
       let parsedRoutine = {}
 
       if (jsonMatch) {
         parsedRoutine = JSON.parse(jsonMatch[0])
 
-        // Match products with actual database IDs
         if (parsedRoutine.routine && Array.isArray(parsedRoutine.routine)) {
           parsedRoutine.routine = parsedRoutine.routine.map((step) => {
-            // Find matching product in shelf
             const matchingProduct = shelfData.find(
               (product) =>
                 product.name

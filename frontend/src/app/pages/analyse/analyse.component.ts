@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common'
 import { HttpClient } from '@angular/common/http'
 import * as Tesseract from 'tesseract.js'
 import { SupabaseService } from 'src/app/core/supabase.service'
-import { FormsModule } from '@angular/forms' // ✅ EKLE
+import { FormsModule } from '@angular/forms' 
 
 @Component({
   selector: 'app-analyse',
@@ -45,7 +45,7 @@ export class AnalyseComponent {
   }
 
   openShelfModal() {
-    this.shelfFormData = { name: '', type: '', brand: '' } // ✅ brand eklendi
+    this.shelfFormData = { name: '', type: '', brand: '' } 
     this.showShelfModal = true
   }
   
@@ -55,7 +55,7 @@ export class AnalyseComponent {
 
       const product = {
         name: this.shelfFormData.name,
-        brand: this.shelfFormData.brand, // ✅ eklendi
+        brand: this.shelfFormData.brand, 
         type: this.shelfFormData.type,
         ingredients: this.ingredients.map(i => i.name)
       }
@@ -67,7 +67,7 @@ export class AnalyseComponent {
         alert('Product added to shelf!')
       },
       error: err => {
-        console.error('❌ ERROR:', err)
+        console.error('ERROR:', err)
         alert('Failed to add product:\n' + (err?.error?.error || err?.message || 'Unknown error'))
       }
     })

@@ -37,12 +37,10 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Set up scroll detection
     this.setupScrollDetection()
   }
 
   ngAfterViewInit(): void {
-    // Initialize gooey overlay after view is ready
     if (this.canvasRef && this.pageRef) {
       const success = this.gooeyOverlayService.init(
         this.canvasRef.nativeElement,
@@ -50,9 +48,8 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
       )
 
       if (success) {
-        // Customize colors for SkinGlow theme
         this.gooeyOverlayService.updateParams({
-          color: [0.058, 0.639, 0.572], // #0fa392 converted to RGB 0-1 range
+          color: [0.058, 0.639, 0.572], 
           speed: 0.15,
           scale: 0.2,
         })
@@ -61,7 +58,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // Clean up gooey overlay
     this.gooeyOverlayService.destroy()
   }
 

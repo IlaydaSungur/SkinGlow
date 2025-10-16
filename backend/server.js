@@ -142,13 +142,11 @@ BÖLÜM 2 → Açıklamalar (Normal Metin)
   }
 })
 
-// API Routes
 app.use('/api', apiRoutes)
 app.use('/compare', compareRouter)
 app.use('/shelf', shelfRouter)
 app.use('/routines', routinesRouter)
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`✅ SkinGlow Backend running on port ${PORT}`)
+  console.log(`SkinGlow Backend running on port ${PORT}`)
 })
